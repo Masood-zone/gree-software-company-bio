@@ -42,9 +42,7 @@ export default function RootLayout({
       >
         {/* Navbar */}
         <Navbar />
-        <main className="lg:container w-full mx-auto overflow-hidden">
-          {children}
-        </main>
+        <main>{children}</main>
         {/* Footer */}
         <Footer />
       </body>

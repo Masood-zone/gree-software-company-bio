@@ -88,7 +88,7 @@ const Navbar = () => {
             } navmenu w-full flex-wrap lg:justify-end items-center mb-16 space-y-8 p-6 border-gray-100 rounded-3xl shadow-2xl shadow-gray-300/20 bg-white dark:bg-gray-700 lg:space-y-0 lg:p-0 lg:m-0 lg:flex md:flex-nowrap lg:bg-transparent lg:w-7/12 lg:shadow-none dark:shadow-none dark:border-gray-700 lg:border-0`}
           >
             {/* Links */}
-            <div className="text-gray-600 dark:text-text-light lg:pr-4">
+            <div className="max-xl:text-black text-white dark:text-text-light lg:pr-4">
               <ul className="space-y-6 tracking-wide font-medium text-base lg:text-lg lg:flex lg:space-y-0">
                 <li>
                   <Link
@@ -117,8 +117,13 @@ const Navbar = () => {
               </ul>
             </div>
             {/* External */}
-            <div className="w-full border-primary/10 pl-2 gap-5 dark:border-gray-700 flex flex-col -ml-1 sm:flex-row lg:space-y-0 md:w-max lg:border-l">
-              <Button href="/contact-us" variant="outline" size="medium">
+            <div className="w-full border-primary/10 pl-2 gap-5 dark:border-gray-700 -ml-1 md:flex lg:space-y-0 md:w-max lg:border-l ">
+              <Button
+                href="/contact-us"
+                variant="outline"
+                size="medium"
+                className="max-xl:text-black text-white"
+              >
                 Contact Us
               </Button>
               {/* Theme switcher */}

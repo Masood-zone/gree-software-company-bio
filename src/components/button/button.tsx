@@ -7,6 +7,7 @@ interface ButtonProps {
   children: ReactNode;
   href?: string;
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -15,6 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   href,
   onClick,
+  className,
 }) => {
   const baseStyles =
     "relative flex items-center justify-center rounded-full font-semibold transition duration-300 ml-auto sm:px-6 " +
@@ -39,7 +41,8 @@ const Button: React.FC<ButtonProps> = ({
   const classes = clsx(
     baseStyles,
     variantStyles[variant] || variantStyles.default,
-    sizeStyles[size] || sizeStyles.medium
+    sizeStyles[size] || sizeStyles.medium,
+    className
   );
 
   if (href) {
