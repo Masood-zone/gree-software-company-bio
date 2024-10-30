@@ -2,20 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer components {
+  .navbar-active .hamburger div:first-child {
+    @apply rotate-45 translate-y-1.5;
+  }
+  .navbar-active .hamburger div:last-child {
+    @apply -rotate-45 -translate-y-1;
+  }
+  .navbar-active div:first-child div:first-child div:last-child {
+    @apply block lg:flex;
   }
 }
 
+:root {
+  --primary: #2563eb; /* Primary color (blue) */
+  --secondary: #14b8a6; /* Secondary color (teal) */
+  --text: #1e293b; /* Primary text color (dark gray) */
+  --text-light: #64748b; /* Light text color (gray) */
+  --text-dark: #0f172a; /* Dark text color (dark navy) */
+  --bg: #ffffff; /* Background color (white) */
+  --white: #ffffff; /* White color */
+  --black: #000000; /* Black color */
+}
+
+.dark {
+  --primary: #3b82f6; /* Lighter shade of blue for dark mode */
+  --secondary: #22d3ee; /* Lighter teal for dark mode */
+  --text: #f1f5f9; /* Light text color */
+  --text-light: #cbd5e1; /* Lighter gray text color */
+  --text-dark: #e2e8f0; /* Darker gray for highlights */
+  --bg: #1e293b; /* Dark background color */
+  --white: #ffffff; /* White color */
+  --black: #000000; /* Black color */
+}
+
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
