@@ -24,18 +24,15 @@ export const Header = () => {
       </div>
       <div className="relative flex flex-col items-start w-full max-w-xl px-4 mx-auto md:px-0 lg:px-8 lg:max-w-screen-xl">
         <div className="mb-16 lg:my-40 lg:max-w-lg lg:pr-5 flex flex-col sm:items-start items-center">
-          <h2 className="mb-5 font-sans text-3xl font-bold tracking-tight text-text-light dark:text-text-dark sm:text-4xl sm:leading-none">
-            Everything you
+          <h2 className="mb-5 font-sans text-3xl font-bold tracking-tight text-text-light dark:text-text-dark sm:text-5xl sm:leading-none">
+            Launch an App
             <br className="hidden md:block" />
-            can imagine{" "}
-            <span className="inline-block text-deep-purple-accent-400">
-              is real
-            </span>
+            <span className="text-black">Grow</span> Your{" "}
+            <span className="inline-block text-black">Business</span>
           </h2>
           <p className="pr-5 mb-5 text-base text-text-light dark:text-text-dark md:text-lg sm:text-left text-center">
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-            accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-            quae. explicabo.
+            Embrace innovation and take your business to new heights. Start your
+            app journey today and watch your business thrive
           </p>
           <div className="flex items-center ">
             <Button variant="default" size="large">
