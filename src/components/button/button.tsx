@@ -17,12 +17,16 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
 }) => {
   const baseStyles =
-    "relative flex items-center justify-center rounded-full font-semibold transition duration-300";
+    "relative flex items-center justify-center rounded-full font-semibold transition duration-300 ml-auto sm:px-6 " +
+    "hover:before:content-[''] hover:before:absolute hover:before:inset-0 hover:before:rounded-full " +
+    "dark:hover:before:bg-primaryLight " +
+    "hover:before:transition hover:before:duration-300 hover:before:scale-105 active:duration-75 active:hover:before:scale-95";
+
   const variantStyles = {
     outline:
-      "border border-primary text-primary dark:text-dark-primary dark:border-dark-primary hover:bg-primary/10 dark:hover:bg-dark-primary/10",
+      "border border-primary text-primary dark:text-dark-primary dark:border-dark-primary hover:bg-primary/10 dark:hover:bg-dark-primary/10 hover:scale-105 active:scale-95",
     empty:
-      "text-primary dark:text-dark-primary hover:bg-primary/10 dark:hover:bg-dark-primary/10",
+      "text-primary dark:text-dark-primary hover:bg-primary/10 dark:hover:bg-dark-primary/10 hover:scale-105 active:scale-95",
     default:
       "bg-primary text-white dark:bg-dark-primary dark:text-text-dark hover:scale-105 active:scale-95",
   };
