@@ -131,3 +131,244 @@ export const about_slides = [
     ],
   },
 ];
+
+export const pricing_structure = [
+  {
+    category: "Management Systems",
+    description:
+      "Comprehensive solutions for schools, enterprises, and organizations.",
+    features: [
+      {
+        name: "Landing Page",
+        details: [
+          "Home page with overview & branding",
+          "User registration/login sections",
+          "Dashboard preview",
+        ],
+      },
+      {
+        name: "User Management",
+        details: ["Admin and user access control", "Role-based dashboards"],
+      },
+      {
+        name: "Data Management",
+        details: [
+          "Database integration (student/employee records)",
+          "Secure data storage and backup solutions",
+        ],
+      },
+      {
+        name: "Analytics and Reporting",
+        details: [
+          "Customizable reporting tools",
+          "Real-time analytics dashboard",
+        ],
+      },
+      {
+        name: "SEO & Performance Optimization",
+        details: [
+          "SEO-ready structure for visibility",
+          "Performance optimizations for scalability",
+        ],
+      },
+      {
+        name: "Support & Maintenance",
+        details: [
+          "Continuous updates & support",
+          "Data backups and recovery options",
+        ],
+      },
+    ],
+  },
+  {
+    category: "Advertisement Websites",
+    description:
+      "For businesses promoting products, services, or announcements.",
+    features: [
+      {
+        name: "Landing Page",
+        details: [
+          "Engaging layout with high-quality visuals",
+          "Call-to-action (CTA) for conversions",
+          "Client testimonials and reviews",
+        ],
+      },
+      {
+        name: "Product/Service Listings",
+        details: [
+          "Product/service showcase with descriptions",
+          "Interactive galleries and media sections",
+        ],
+      },
+      {
+        name: "Lead Capture & Conversion Tools",
+        details: [
+          "Contact forms and pop-ups",
+          "Analytics for tracking ad performance",
+        ],
+      },
+      {
+        name: "SEO & Ad Optimization",
+        details: [
+          "SEO for enhanced reach",
+          "Integrations for Google Ads, Facebook Pixel",
+        ],
+      },
+      {
+        name: "Performance Optimization",
+        details: [
+          "Lightweight code and faster load times",
+          "Mobile and desktop responsiveness",
+        ],
+      },
+      {
+        name: "Support & Maintenance",
+        details: [
+          "Ongoing performance improvements",
+          "Regular SEO and keyword updates",
+        ],
+      },
+    ],
+  },
+  {
+    category: "Portfolio Websites",
+    description: "Showcase sites for individuals or companies.",
+    features: [
+      {
+        name: "Landing Page",
+        details: [
+          "Unique, branded design to stand out",
+          "Overview of services and contact information",
+        ],
+      },
+      {
+        name: "Project/Portfolio Gallery",
+        details: [
+          "Showcase work samples, media galleries",
+          "Project descriptions and client reviews",
+        ],
+      },
+      {
+        name: "About & Contact Pages",
+        details: [
+          "Personal or company bio",
+          "Social media integrations and contact forms",
+        ],
+      },
+      {
+        name: "SEO Optimization",
+        details: [
+          "Keyword-focused structure for better visibility",
+          "Meta descriptions and alt tags for images",
+        ],
+      },
+      {
+        name: "Performance & Aesthetic Optimization",
+        details: [
+          "High-quality media without compromising speed",
+          "Mobile-optimized layouts",
+        ],
+      },
+      {
+        name: "Support & Maintenance",
+        details: [
+          "Regular updates and optimizations",
+          "Support for new project additions",
+        ],
+      },
+    ],
+  },
+  {
+    category: "E-commerce Websites",
+    description: "Designed for online product or service sales.",
+    features: [
+      {
+        name: "Landing Page",
+        details: [
+          "Visually appealing, brand-focused home page",
+          "Featured products and promotional banners",
+        ],
+      },
+      {
+        name: "Product Catalog & Categories",
+        details: [
+          "Dynamic product listings with search and filter options",
+          "Detailed product pages with descriptions, images, and reviews",
+        ],
+      },
+      {
+        name: "Shopping Cart & Checkout",
+        details: [
+          "Secure and streamlined cart and checkout experience",
+          "Support for multiple payment gateways (e.g., PayPal, Stripe)",
+        ],
+      },
+      {
+        name: "Order Management & Customer Accounts",
+        details: [
+          "Admin dashboard for tracking orders and managing inventory",
+          "Customer accounts with order history, tracking, and wish lists",
+        ],
+      },
+      {
+        name: "SEO & Conversion Optimization",
+        details: [
+          "SEO for individual products and categories",
+          "Conversion-focused layout and CTA placements",
+        ],
+      },
+      {
+        name: "Performance Optimization",
+        details: [
+          "Fast loading times and responsive design for mobile devices",
+          "Scalable for high traffic and product volumes",
+        ],
+      },
+      {
+        name: "Support & Maintenance",
+        details: [
+          "Regular updates for security and performance",
+          "Support for adding new products and features",
+        ],
+      },
+    ],
+  },
+  {
+    category: "Custom Websites",
+    description: "Custom solutions tailored to specific requirements.",
+    features: [
+      {
+        name: "Landing Page",
+        details: [
+          "Fully custom layout to suit specifications",
+          "Adaptable sections for specified goals",
+        ],
+      },
+      {
+        name: "Customizable Content Sections",
+        details: [
+          "Any specific sections as per client's requirements",
+          "Custom integrations (e.g., APIs, plugins)",
+        ],
+      },
+      {
+        name: "SEO & Analytics",
+        details: [
+          "Tailored SEO approach for niche markets",
+          "Integration with Google Analytics, custom analytics",
+        ],
+      },
+      {
+        name: "Performance Optimization",
+        details: [
+          "Optimization for custom functionalities",
+          "Device and browser compatibility checks",
+        ],
+      },
+      {
+        name: "Ongoing Support & Maintenance",
+        details: ["Tailored maintenance plans", "Feature updates as requested"],
+      },
+    ],
+  },
+];
