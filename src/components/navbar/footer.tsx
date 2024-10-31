@@ -37,7 +37,11 @@ const Footer: React.FC = () => {
     },
     {
       title: "Products",
-      links: [{ href: "/pricing", text: "Pricing" }],
+      links: [
+        { href: "/pricing", text: "Management Systems" },
+        { href: "/pricing", text: "Advertisement Websites" },
+        { href: "/pricing", text: "E-Commerce" },
+      ],
     },
     {
       title: "Resources",
