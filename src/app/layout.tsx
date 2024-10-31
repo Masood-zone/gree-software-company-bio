@@ -3,6 +3,8 @@ import "./globals.css";
 import { urbanistFontItalic, urbanistFontRegular } from "./fonts/fonts";
 import Navbar from "@/components/navbar/navbar";
 import Footer from "@/components/navbar/footer";
+import ScrollToTop from "@/components/navbar/scroll-to-top";
+import SmoothScroll from "@/components/navbar/smooth-scroll";
 
 export const metadata: Metadata = {
   title: "Gree Software Company",
@@ -40,9 +42,13 @@ export default function RootLayout({
       <body
         className={`${urbanistFontRegular.variable} ${urbanistFontItalic.variable} antialiased`}
       >
+        <SmoothScroll />
         {/* Navbar */}
         <Navbar />
-        <main>{children}</main>
+        <main>
+          {children}
+          <ScrollToTop />
+        </main>
         {/* Footer */}
         <Footer />
       </body>
