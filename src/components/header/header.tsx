@@ -40,10 +40,10 @@ export const Header = () => {
           </p>
           <div className="flex items-center ">
             <Button variant="default" size="large">
-              <Link href="/">Get started</Link>
+              <Link href="/contact-us">Get started</Link>
             </Button>
             <Button variant="empty">
-              <Link href="/">Learn more</Link>
+              <Link href="/about">Learn more</Link>
             </Button>
           </div>
           <div className="mt-5">
