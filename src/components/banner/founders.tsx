@@ -8,7 +8,7 @@ import YeboahImage from "@/assets/images/yeboah.png";
 export default function Founders() {
   const teamMembers = [
     {
-      name: "Mr. Yeboah Osei Dickson",
+      name: "Mr.Yeboah",
       title: "Founder & CEO",
       imgSrc: YeboahImage,
       socialLinks: [
