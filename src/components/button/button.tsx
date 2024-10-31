@@ -1,12 +1,11 @@
-import React, { ReactNode, MouseEvent } from "react";
+import React, { ReactNode, ButtonHTMLAttributes } from "react";
 import clsx from "clsx";
 
-interface ButtonProps {
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "outline" | "empty" | "default";
   size?: "large" | "medium" | "small";
   children: ReactNode;
   href?: string;
-  onClick?: (event: MouseEvent<HTMLButtonElement>) => void;
   className?: string;
 }
 
@@ -15,8 +14,8 @@ const Button: React.FC<ButtonProps> = ({
   size = "medium",
   children,
   href,
-  onClick,
   className,
+  ...props
 }) => {
   const baseStyles =
     "relative flex items-center justify-center rounded-full font-semibold transition duration-300 ml-auto sm:px-6 " +
@@ -54,7 +53,7 @@ const Button: React.FC<ButtonProps> = ({
   }
 
   return (
-    <button className={classes} onClick={onClick}>
+    <button className={classes} {...props}>
       {children}
     </button>
   );
