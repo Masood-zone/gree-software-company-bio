@@ -2,13 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaFacebook } from "react-icons/fa";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa6";
-import MasoodImage from "@/assets/images/founder-1.jpg";
+import MasoodImage from "@/assets/images/founder-1.png";
 import YeboahImage from "@/assets/images/yeboah.png";
 
 export default function Founders() {
   const teamMembers = [
     {
-      name: "Mr.Yeboah",
+      name: "MrYEBOAH",
       title: "Founder & CEO",
       imgSrc: YeboahImage,
       socialLinks: [
