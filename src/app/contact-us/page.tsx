@@ -208,7 +208,7 @@ export default function ContactPage() {
                   target="_blank"
                   aria-label="telegram"
                 >
-                  <FaTelegram size={20} />
+                  <FaTelegram size={28} />
                 </Link>
 
                 <Link
@@ -217,7 +217,7 @@ export default function ContactPage() {
                   target="_blank"
                   aria-label="YouTube"
                 >
-                  <FaYoutube size={20} />
+                  <FaYoutube size={28} />
                 </Link>
 
                 <Link
@@ -226,7 +226,7 @@ export default function ContactPage() {
                   target="_blank"
                   aria-label="GitHub"
                 >
-                  <FaGithub size={20} />
+                  <FaGithub size={28} />
                 </Link>
 
                 <Link
@@ -235,7 +235,7 @@ export default function ContactPage() {
                   target="_blank"
                   aria-label="Instagram"
                 >
-                  <FaInstagram size={20} />
+                  <FaInstagram size={28} />
                 </Link>
               </div>
             </div>
