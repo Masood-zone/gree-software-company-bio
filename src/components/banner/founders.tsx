@@ -50,10 +50,10 @@ export default function Founders() {
   ];
 
   return (
-    <section className="w-full container mx-auto">
+    <section className="w-full container  mx-auto">
       {/* Text */}
-      <div className="h-80 bg-gray-100 dark:bg-gray-800">
-        <div className="container px-6 py-10 mx-auto">
+      <div className="h-80 bg-gray-100 dark:bg-gray-800  rounded-xl">
+        <div className="container px-6 py-10 mx-auto  ">
           <h1 className="text-2xl font-semibold text-center text-gray-800 capitalize lg:text-3xl dark:text-white">
             The Founders of Gree
           </h1>
@@ -81,8 +81,8 @@ export default function Founders() {
                 className="object-cover w-full rounded-xl aspect-square"
                 src={member.imgSrc}
                 alt={`${member.name}'s photo`}
-                width={200}
-                height={200}
+                width={1000}
+                height={1000}
               />
               <h1 className="mt-4 text-2xl font-semibold text-gray-700 capitalize dark:text-white">
                 {member.name}

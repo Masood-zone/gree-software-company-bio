@@ -1,17 +1,17 @@
 import Image from "next/image";
 import React from "react";
 import SeanNationTVLogo from "@/assets/images/sean-nation-logo.jpg";
-import RamothServicesLogo from "@/assets/images/ramoth-official-logo.png";
+import RamothServicesLogo from "@/assets/images/ramoth-official-logo.jpg";
 
 export default function ClientsLogoCloud() {
   return (
     <>
-      <div className="items-center gap-5 lg:flex">
+      <div className="items-center gap-5 lg:flex mt-5">
         <div className="lg:w-full">
-          <h2 className="text-2xl text-center sm:text-left font-bold text-gray-800 dark:text-black">
+          <h2 className="text-2xl text-center sm:text-left font-bold">
             Our clients
           </h2>
-          <p className="text-gray-600 dark:text-black sm:text-left text-center">
+          <p className="sm:text-left text-center">
             We have already worked for +2 clients
           </p>
         </div>
