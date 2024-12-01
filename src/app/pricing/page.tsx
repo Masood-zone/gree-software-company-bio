@@ -1,53 +1,51 @@
-"use client";
-
-import { useState } from "react";
-import Image from "next/image";
-import { pricing_structure } from "@/assets/data";
-import StarterImage from "@/assets/svgs/pro.webp";
-import TeamImage from "@/assets/svgs/team.webp";
-import OrganizationImage from "@/assets/svgs/organization.webp";
+// import { useState } from "react";
+// import Image from "next/image";
+// import { pricing_structure } from "@/assets/data";
+// import StarterImage from "@/assets/svgs/pro.webp";
+// import TeamImage from "@/assets/svgs/team.webp";
+// import OrganizationImage from "@/assets/svgs/organization.webp";
 import Button from "@/components/button/button";
 
-const plans = [
-  {
-    name: "Starter",
-    description: "Perfect for small projects and individuals",
-    price: 15,
-    icon: StarterImage,
-    features: [
-      "Favorite profile",
-      "Questions & Answers (soon)",
-      "UI templates, icons, illustrations (Limited to 5)",
-    ],
-  },
-  {
-    name: "Team",
-    description: "Ideal for growing businesses and teams",
-    price: 189,
-    icon: TeamImage,
-    features: [
-      "All Starter features",
-      "Source files, ePub",
-      "Premium tutorials",
-      "UI templates, icons, illustrations (Unlimited)",
-    ],
-  },
-  {
-    name: "Organization",
-    description: "For large enterprises and organizations",
-    price: 379,
-    icon: OrganizationImage,
-    features: [
-      "All Team features",
-      "All courses and videos",
-      "Commercial use",
-      "Manage team and see progress",
-    ],
-  },
-];
+// const plans = [
+//   {
+//     name: "Starter",
+//     description: "Perfect for small projects and individuals",
+//     price: 15,
+//     icon: StarterImage,
+//     features: [
+//       "Favorite profile",
+//       "Questions & Answers (soon)",
+//       "UI templates, icons, illustrations (Limited to 5)",
+//     ],
+//   },
+//   {
+//     name: "Team",
+//     description: "Ideal for growing businesses and teams",
+//     price: 189,
+//     icon: TeamImage,
+//     features: [
+//       "All Starter features",
+//       "Source files, ePub",
+//       "Premium tutorials",
+//       "UI templates, icons, illustrations (Unlimited)",
+//     ],
+//   },
+//   {
+//     name: "Organization",
+//     description: "For large enterprises and organizations",
+//     price: 379,
+//     icon: OrganizationImage,
+//     features: [
+//       "All Team features",
+//       "All courses and videos",
+//       "Commercial use",
+//       "Manage team and see progress",
+//     ],
+//   },
+// ];
 
 export default function PricingPage() {
-  const [selectedService, setSelectedService] = useState(pricing_structure[0]);
+  // const [selectedService, setSelectedService] = useState(pricing_structure[0]);
 
   return (
     <div className="xl:container m-auto px-6 py-20 md:px-12 lg:px-20 xl:px-0">
@@ -63,6 +61,26 @@ export default function PricingPage() {
         </p>
       </div>
       <div className="m-auto mt-12">
+        {/* Under development section */}
+        <div className="text-center">
+          <h3 className="text-xl font-bold text-gray-800 dark:text-white">
+            Our pricing structure is currently under development. Please check
+            back later.
+          </h3>
+          <p className="mt-4 text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+            In the meantime, feel free to contact us for a custom quote or
+            consultation.
+          </p>
+          <div className="w-56 m-auto mt-8">
+            <Button href="/contact-us" size="medium" variant="outline">
+              <span className="relative text-base font-semibold text-sky-600 dark:text-white">
+                Contact us
+              </span>
+            </Button>
+          </div>
+        </div>
+      </div>
+      {/* <div className="m-auto mt-12">
         <div className="relative z-10">
           <div className="relative overflow-auto p-6">
             <table className="w-full border-t border-gray-100 dark:border-gray-700">
@@ -159,7 +177,7 @@ export default function PricingPage() {
             </table>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
