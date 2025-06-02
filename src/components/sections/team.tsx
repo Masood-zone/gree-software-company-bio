@@ -7,7 +7,7 @@ export default function Team() {
     {
       name: "Dickson Osei Yeboah",
       role: "Founder & CEO",
-      image: "/src/assets/images/yeboah.png",
+      image: "/yeboah.png",
       bio: "Visionary leader with expertise in software architecture and business strategy. Passionate about creating innovative solutions that drive business growth.",
       social: {
         linkedin: "https://www.linkedin.com/in/dickson-osei-yeboah-56884728b/",
@@ -17,7 +17,7 @@ export default function Team() {
     {
       name: "Masood Acheampong",
       role: "Co-Founder & Managing Director",
-      image: "/src/assets/images/founder-1.png",
+      image: "/masood.png",
       bio: "Technical expert with deep knowledge in full-stack development and project management. Committed to delivering high-quality software solutions.",
       social: {
         linkedin: "https://www.linkedin.com/in/masood-acheampong-3793b4239",
