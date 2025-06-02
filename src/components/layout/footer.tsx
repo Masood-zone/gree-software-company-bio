@@ -14,13 +14,13 @@ export default function Footer() {
             <div className="flex items-center space-x-3">
               <div className="relative w-8 h-8">
                 <Image
-                  src="/src/assets/images/gree-logo-white.jpg"
+                  src="/gree-logo-white.jpg"
                   alt="Gree Software Company"
                   fill
                   className="object-contain dark:hidden"
                 />
                 <Image
-                  src="/src/assets/images/gree-logo-black.jpg"
+                  src="/gree-logo-black.jpg"
                   alt="Gree Software Company"
                   fill
                   className="object-contain hidden dark:block"
