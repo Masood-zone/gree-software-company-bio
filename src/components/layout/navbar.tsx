@@ -53,7 +53,7 @@ export default function Navbar() {
                 className="object-contain hidden dark:block"
               />
             </div>
-            <span className="text-xl font-bold">Gree Software</span>
+            <span className="text-xl font-bold">Gree Software Company</span>
           </Link>
 
           {/* Desktop Navigation */}

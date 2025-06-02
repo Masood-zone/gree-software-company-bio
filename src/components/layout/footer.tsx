@@ -156,7 +156,7 @@ export default function Footer() {
               <li className="flex items-start space-x-2">
                 <MapPin size={16} className="text-muted-foreground mt-0.5" />
                 <span className="text-muted-foreground">
-                  AAMUSTED, Tanoso
+                  Abuakwa Housing, Tanoso
                   <br />
                   Kumasi, Ghana
                 </span>

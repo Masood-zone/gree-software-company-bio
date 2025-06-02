@@ -5,17 +5,19 @@ import { ExternalLink } from "lucide-react";
 export default function Portfolio() {
   const projects = [
     {
-      title: "Sean Nation TV",
+      title: "Canteen Management System",
       description:
-        "Media and entertainment website with content management system",
-      image: "/src/assets/images/sean-nation-logo.jpg",
-      category: "Web Development",
+        "A comprehensive platform for managing canteen operations, including menu management, order processing, and payment integration.",
+      image: "/cms-logo.svg",
+      category: "Web Application",
+      link: "https://can.rasking.top",
     },
     {
-      title: "Ramoth Services",
-      description: "Business services platform with client management features",
-      image: "/src/assets/images/ramoth-official-logo.jpg",
+      title: "Great AFA Construction",
+      description: "Business services platform with project management tools",
+      image: "/greatafa-logo.jpg",
       category: "Business Platform",
+      link: "https://greatafaconstruction.com",
     },
   ];
 
@@ -48,12 +50,18 @@ export default function Portfolio() {
                 />
                 <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
                 <div className="absolute top-4 right-4">
-                  <div className="w-10 h-10 bg-white/80 dark:bg-secondary/80 backdrop-blur-sm rounded-full flex items-center justify-center">
-                    <ExternalLink
-                      size={20}
-                      className="text-black dark:text-white"
-                    />
-                  </div>
+                  <Link
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <div className="w-10 h-10 bg-white/80 dark:bg-secondary/80 backdrop-blur-sm rounded-full flex items-center justify-center">
+                      <ExternalLink
+                        size={20}
+                        className="text-black dark:text-white"
+                      />
+                    </div>
+                  </Link>
                 </div>
               </div>
               <div className="p-8">

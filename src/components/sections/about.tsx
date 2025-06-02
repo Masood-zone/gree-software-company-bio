@@ -30,7 +30,8 @@ export default function About() {
           <div className="space-y-8 animate-fade-in-left">
             <div>
               <h2 className="text-4xl lg:text-5xl font-bold mb-6">
-                About <span className="gradient-text">Gree Software</span>
+                About <span className="gradient-text">Gree Software</span>{" "}
+                Company
               </h2>
               <p className="text-xl text-muted-foreground leading-relaxed">
                 We are a professional software development company dedicated to
@@ -75,19 +76,19 @@ export default function About() {
 
           {/* Stats */}
           <div className="grid grid-cols-2 gap-8 animate-fade-in-right">
-            <div className="text-center p-8 bg-white dark:bg-secondary rounded-2xl">
+            <div className="text-center p-8 bg-card dark:bg-secondary rounded-2xl">
               <div className="text-4xl font-bold mb-2">100%</div>
               <div className="text-muted-foreground">Client Satisfaction</div>
             </div>
-            <div className="text-center p-8 bg-white dark:bg-secondary rounded-2xl">
+            <div className="text-center p-8 bg-card dark:bg-secondary rounded-2xl">
               <div className="text-4xl font-bold mb-2">24/7</div>
               <div className="text-muted-foreground">Support Available</div>
             </div>
-            <div className="text-center p-8 bg-white dark:bg-secondary rounded-2xl">
+            <div className="text-center p-8 bg-card dark:bg-secondary rounded-2xl">
               <div className="text-4xl font-bold mb-2">Fast</div>
               <div className="text-muted-foreground">Project Delivery</div>
             </div>
-            <div className="text-center p-8 bg-white dark:bg-secondary rounded-2xl">
+            <div className="text-center p-8 bg-card dark:bg-secondary rounded-2xl">
               <div className="text-4xl font-bold mb-2">Modern</div>
               <div className="text-muted-foreground">Technologies</div>
             </div>

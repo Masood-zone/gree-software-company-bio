@@ -8,7 +8,8 @@ export default function AboutHero() {
           <div className="space-y-8 animate-fade-in-left">
             <div>
               <h1 className="text-5xl lg:text-6xl font-bold mb-6">
-                About <span className="gradient-text">Gree Software</span>
+                About <span className="gradient-text">Gree Software</span>{" "}
+                Company
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
                 Founded with a vision to transform businesses through innovative
@@ -20,7 +21,7 @@ export default function AboutHero() {
 
             <div className="grid grid-cols-2 gap-8">
               <div className="text-center p-6 bg-secondary rounded-xl">
-                <div className="text-3xl font-bold mb-2">2021</div>
+                <div className="text-3xl font-bold mb-2">2024</div>
                 <div className="text-muted-foreground">Founded</div>
               </div>
               <div className="text-center p-6 bg-secondary rounded-xl">
@@ -33,13 +34,13 @@ export default function AboutHero() {
           <div className="flex justify-center animate-fade-in-right">
             <div className="relative w-96 h-96">
               <Image
-                src="/src/assets/images/gree-logo-white.jpg"
+                src="/gree-logo-white.jpg"
                 alt="Gree Software Company"
                 fill
                 className="object-contain dark:hidden"
               />
               <Image
-                src="/src/assets/images/gree-logo-black.jpg"
+                src="/gree-logo-black.jpg"
                 alt="Gree Software Company"
                 fill
                 className="object-contain hidden dark:block"

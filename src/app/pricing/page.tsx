@@ -4,7 +4,7 @@
 // import StarterImage from "@/assets/svgs/pro.webp";
 // import TeamImage from "@/assets/svgs/team.webp";
 // import OrganizationImage from "@/assets/svgs/organization.webp";
-import Button from "@/components/button/button";
+import { Button } from "@/components/ui/button";
 
 // const plans = [
 //   {

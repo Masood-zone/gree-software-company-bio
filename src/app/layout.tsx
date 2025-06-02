@@ -67,7 +67,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${urbanFont.variable} ${openSans.variable} font-sans antialiased min-h-screen bg-background text-foreground`}
+        className={`${urbanFont.variable} ${openSans.variable} font-sans antialiased bg-background text-foreground`}
       >
         <Navbar />
         <main className="min-h-screen">{children}</main>
