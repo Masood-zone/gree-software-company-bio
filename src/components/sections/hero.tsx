@@ -33,13 +33,14 @@ export default function Hero() {
         <div className="space-y-8 animate-fade-in-left">
           <div className="space-y-4">
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-              Transform Your
+              Empower Your
               <span className="block gradient-text">Business</span>
-              <span className="block">with Code</span>
+              <span className="block">Through Innovation</span>
             </h1>
             <p className="text-xl text-muted-foreground leading-relaxed max-w-lg">
-              Professional software development services that drive growth,
-              enhance efficiency, and deliver exceptional user experiences.
+              Unlock your company’s full potential with tailored software
+              solutions designed to accelerate growth, streamline operations,
+              and deliver outstanding digital experiences.
             </p>
           </div>
 
