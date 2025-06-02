@@ -21,7 +21,7 @@ export default function AboutHero() {
 
             <div className="grid grid-cols-2 gap-8">
               <div className="text-center p-6 bg-secondary rounded-xl">
-                <div className="text-3xl font-bold mb-2">2024</div>
+                <div className="text-3xl font-bold mb-2">2023</div>
                 <div className="text-muted-foreground">Founded</div>
               </div>
               <div className="text-center p-6 bg-secondary rounded-xl">
