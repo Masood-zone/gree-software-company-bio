@@ -1,16 +1,37 @@
+import type React from "react";
 import type { Metadata } from "next";
 import "./globals.css";
-import { urbanistFontItalic, urbanistFontRegular } from "./fonts/fonts";
-import Navbar from "@/components/navbar/navbar";
-import Footer from "@/components/navbar/footer";
-import ScrollToTop from "@/components/navbar/scroll-to-top";
-import SmoothScroll from "@/components/navbar/smooth-scroll";
+import { Open_Sans, Urbanist } from "next/font/google";
+import Navbar from "@/components/layout/navbar";
+import Footer from "@/components/layout/footer";
+import { generateSEO } from "@/lib/seo";
+import { organizationSchema } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
-  title: "Gree Software Company",
+export const metadata: Metadata = generateSEO({
+  title: "Gree Software Company - Professional Software Development Services",
   description:
-    "Discover our web development services designed to elevate your online presence, streamline operations, and boost engagement. Whether you need a comprehensive management system, an engaging advertisement website, a showcase portfolio, a robust e-commerce platform, or something completely custom, we build tailored solutions to meet your unique needs.",
-};
+    "Transform your business with custom web development, mobile apps, desktop applications, and reliable hosting services. Professional software solutions for modern businesses.",
+  keywords: [
+    "web development",
+    "mobile app development",
+    "desktop applications",
+    "web hosting",
+    "software development",
+    "business solutions",
+    "Ghana software company",
+  ],
+});
+
+const urbanFont = Urbanist({
+  variable: "--font-urbanist",
+  subsets: ["latin"],
+  weight: "400",
+});
+
+const openSans = Open_Sans({
+  subsets: ["latin"],
+  variable: "--font-open-sans",
+});
 
 export default function RootLayout({
   children,
@@ -18,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link
           rel="apple-touch-icon"
@@ -38,18 +59,18 @@ export default function RootLayout({
           href="/favicon-16x16.png"
         />
         <link rel="manifest" href="/site.webmanifest" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
       </head>
       <body
-        className={`${urbanistFontRegular.variable} ${urbanistFontItalic.variable} antialiased`}
+        className={`${urbanFont.variable} ${openSans.variable} font-sans antialiased min-h-screen bg-background text-foreground`}
       >
-        <SmoothScroll />
-        {/* Navbar */}
         <Navbar />
-        <main>
-          {children}
-          <ScrollToTop />
-        </main>
-        {/* Footer */}
+        <main className="min-h-screen">{children}</main>
         <Footer />
       </body>
     </html>
