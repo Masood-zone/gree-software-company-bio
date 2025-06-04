@@ -12,7 +12,7 @@ export default function Portfolio() {
       category: "Web Application",
       badgeColor:
         "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
-      link: "https://can.rasking.top",
+      link: "https://canteen-management-system-private-s.vercel.app",
     },
     {
       title: "Farzel - Ecommerce App",
