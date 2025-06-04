@@ -5,13 +5,22 @@ import { ExternalLink } from "lucide-react";
 export default function Portfolio() {
   const projects = [
     {
+      title: "Great AFA Construction",
+      description: "Business services platform with project management tools",
+      image: "/greatafa-logo.jpg",
+      category: "Business Platform",
+      badgeColor:
+        "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+      link: "https://greatafaconstruction.com",
+    },
+    {
       title: "Canteen Management System",
       description:
         "A comprehensive platform for managing canteen operations, including menu management, order processing, and payment integration.",
       image: "/cms-logo.svg",
       category: "Web Application",
       badgeColor:
-        "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+        "bg-blue-100 text-blue-800 dark:bg-bzlue-900 dark:text-blue-200",
       link: "https://canteen-management-system-private-s.vercel.app",
     },
     {
@@ -22,15 +31,6 @@ export default function Portfolio() {
       category: "Ecommerce",
       badgeColor:
         "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200",
-    },
-    {
-      title: "Great AFA Construction",
-      description: "Business services platform with project management tools",
-      image: "/greatafa-logo.jpg",
-      category: "Business Platform",
-      badgeColor:
-        "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-      link: "https://greatafaconstruction.com",
     },
     {
       title: "Guest House System",
