@@ -24,13 +24,14 @@ export default function Portfolio() {
       link: "https://canteen-management-system-private-s.vercel.app",
     },
     {
-      title: "Farzel - Ecommerce App",
+      title: "Farzel",
       description:
-        "A modern ecommerce platform enabling seamless online shopping, product management, and secure payments.",
+        "A modern e-commerce platform enabling seamless online shopping, product management, and secure payments.",
       image: "/farzel.svg",
       category: "Ecommerce",
       badgeColor:
         "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200",
+      link: "https://farzel.shop",
     },
     {
       title: "Guest House System",
