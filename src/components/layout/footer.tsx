@@ -159,7 +159,7 @@ export default function Footer() {
                   href="tel:+233530929975"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  +233
+                  +233 53 092 9975
                 </Link>
               </li>
               <li className="flex items-center space-x-2">
