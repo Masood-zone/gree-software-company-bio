@@ -147,10 +147,28 @@ export default function Footer() {
               <li className="flex items-center space-x-2">
                 <Phone size={16} className="text-muted-foreground" />
                 <Link
+                  href="tel:+233546393271"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  +233 54 639 3271
+                </Link>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Phone size={16} className="text-muted-foreground" />
+                <Link
                   href="tel:+233530929975"
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
-                  +233 530 929 975
+                  +233
+                </Link>
+              </li>
+              <li className="flex items-center space-x-2">
+                <Phone size={16} className="text-muted-foreground" />
+                <Link
+                  href="tel:+233544853278"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
+                  +233 54 485 3278
                 </Link>
               </li>
               <li className="flex items-start space-x-2">
