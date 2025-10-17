@@ -107,7 +107,7 @@ export default function EmbedModal({
           </div>
 
           <p className="mt-3 text-xs text-muted-foreground text-center">
-            Powered by Canva
+            Powered by Gree Software Company
           </p>
         </div>
       </div>
