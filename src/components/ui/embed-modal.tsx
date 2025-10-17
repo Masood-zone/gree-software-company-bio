@@ -6,14 +6,26 @@ import { X } from "lucide-react";
 type EmbedModalProps = {
   embedSrc?: string;
   title?: string;
-  localStorageKey?: string;
+  /**
+   * Storage key for persisting dismissal state.
+   * When using storage="session" it will show once per browser session.
+   */
+  storageKey?: string;
+  /**
+   * Where to persist the dismissal:
+   * - 'session': show again when the user returns (new tab/window or after closing the browser)
+   * - 'local': hide across future visits until storage is cleared
+   * - 'none': never persist; always show on mount
+   */
+  storage?: "session" | "local" | "none";
   autoOpenOnFirstVisit?: boolean;
 };
 
 export default function EmbedModal({
   embedSrc = "https://www.canva.com/design/DAG2FTqGdKY/xOlv9vISov3eJ1rzZAi7CQ/view?embed",
   title = "Featured Presentation",
-  localStorageKey = "gree:hasSeenCanvaEmbed",
+  storageKey = "gree:hasSeenCanvaEmbed",
+  storage = "session",
   autoOpenOnFirstVisit = true,
 }: EmbedModalProps) {
   const [open, setOpen] = useState(false);
@@ -23,13 +35,17 @@ export default function EmbedModal({
   useEffect(() => {
     if (!autoOpenOnFirstVisit) return;
     try {
-      const seen =
-        typeof window !== "undefined" && localStorage.getItem(localStorageKey);
-      if (!seen) {
+      if (typeof window === "undefined") return;
+      if (storage === "none") {
         setOpen(true);
+        return;
       }
+      const store =
+        storage === "session" ? window.sessionStorage : window.localStorage;
+      const seen = store.getItem(storageKey);
+      if (!seen) setOpen(true);
     } catch {}
-  }, [autoOpenOnFirstVisit, localStorageKey]);
+  }, [autoOpenOnFirstVisit, storageKey, storage]);
 
   // Lock scroll when open
   useEffect(() => {
@@ -46,9 +62,13 @@ export default function EmbedModal({
   const handleClose = useCallback(() => {
     setOpen(false);
     try {
-      localStorage.setItem(localStorageKey, "1");
+      if (typeof window === "undefined") return;
+      if (storage === "none") return; // don't persist
+      const store =
+        storage === "session" ? window.sessionStorage : window.localStorage;
+      store.setItem(storageKey, "1");
     } catch {}
-  }, [localStorageKey]);
+  }, [storageKey, storage]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
