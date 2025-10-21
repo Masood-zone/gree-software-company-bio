@@ -1,0 +1,121 @@
+// Prisma schema for Gree Software Academy enrollment and payments
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum EnrollmentStatus {
+  PENDING       // Submitted details, not paid yet
+  AWAITING_VERIFICATION // Paid offline or pending PSP callback
+  PARTIALLY_PAID // One or more installment payments made, not fully settled
+  PAID          // Successfully paid and verified
+  FAILED        // Payment failed
+  CANCELLED     // User cancelled or timed out
+}
+
+enum PaymentMethod {
+  CASH
+  BANK_TRANSFER
+  MOBILE_MONEY
+  OTHER
+}
+
+enum PaymentStatus {
+  INITIATED
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+// Core models
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  phone         String
+  fullName      String?
+  location      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  enrollments   Enrollment[]
+}
+
+model Enrollment {
+  id            String           @id @default(cuid())
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+
+  // What they are enrolling into; in the future this could relate to Course
+  program       String           // e.g., "Gree Software Academy"
+  cohort        String?          // e.g., "2025-Q1"
+  course        Course           @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  courseId      String
+
+  status        EnrollmentStatus @default(PENDING)
+  notes         String?
+  // Pricing snapshot and running totals for installments
+  agreedFeeMinor  Int?           // snapshot of course price at time of enrollment
+  feeCurrency     String?        @default("GHS")
+  amountPaidMinor Int            @default(0)
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  payments      Payment[]
+
+  @@unique([userId, courseId, cohort]) // prevent duplicate enrollments for same course/cohort
+  @@index([userId])
+  @@index([courseId])
+}
+
+model Payment {
+  id              String         @id @default(cuid())
+  enrollment      Enrollment     @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+  enrollmentId    String
+
+  reference       String         @unique // PSP reference (Paystack reference) or internal
+  amountMinor     Int            // amount in minor units
+  currency        String         @default("GHS")
+  method          PaymentMethod  @default(MOBILE_MONEY)
+  status          PaymentStatus  @default(INITIATED)
+  isInstallment   Boolean        @default(false)
+
+  // PSP fields
+  paystackTrxId   String?        // Paystack transaction id
+  paystackAuth    String?        // Authorization code
+
+  metadata        Json?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+}
+
+// Outbound communications log (SMS/Email)
+model NotificationLog {
+  id          String   @id @default(cuid())
+  channel     String   // sms | email | other
+  to          String
+  subject     String?
+  body        String?
+  status      String   // queued | sent | failed
+  providerId  String?  // UelloSend or Gmail message id
+  meta        Json?
+  createdAt   DateTime @default(now())
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  priceMinor  Int?     // if per-course pricing is needed
+  currency    String?  @default("GHS")
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  enrollments Enrollment[]
+}

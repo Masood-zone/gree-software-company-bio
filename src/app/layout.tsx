@@ -6,6 +6,7 @@ import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { generateSEO } from "@/lib/seo";
 import { organizationSchema } from "@/lib/structured-data";
+import Providers from "@/providers/providers";
 
 export const metadata: Metadata = generateSEO({
   title: "Gree Software Company - Professional Software Development Services",
@@ -69,9 +70,11 @@ export default function RootLayout({
       <body
         className={`${urbanFont.variable} ${openSans.variable} font-sans antialiased bg-background text-foreground`}
       >
-        <Navbar />
-        <main className="min-h-screen">{children}</main>
-        <Footer />
+        <Providers>
+          <Navbar />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
