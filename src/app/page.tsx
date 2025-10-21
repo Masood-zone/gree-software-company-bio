@@ -7,6 +7,7 @@ import { generateSEO } from "@/lib/seo";
 import { servicesSchema } from "@/lib/structured-data";
 import ScrollToTop from "@/components/scroll-to-top";
 import EmbedModal from "@/components/ui/embed-modal";
+import Banner from "@/components/enrollment/banner";
 
 export const metadata = generateSEO({
   title: "Professional Software Development Services",
@@ -25,6 +26,7 @@ export default function HomePage() {
         }}
       />
       <Hero />
+      <Banner />
       <Services />
       <About />
       <Portfolio />

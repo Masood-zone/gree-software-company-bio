@@ -113,7 +113,8 @@ export async function POST(req: Request) {
     const currency = enrollment.feeCurrency || course.currency || "GHS";
 
     // Use provided amount to initialize this payment (installment or full)
-    // Prefer amountMajor if provided, else amountMinorOverride; fallback to agreedFeeMinor
+    // Prefer amountMajor (cedis). If only amountMinor is provided, treat it as cedis for convenience and convert to pesewas.
+    // This avoids GHc6 when the caller intended GHc600 with { amountMinor: 600 }.
     let amountMinor = agreedFeeMinor;
     let conversionNote: string | undefined;
 
@@ -121,18 +122,8 @@ export async function POST(req: Request) {
       amountMinor = paystackService.convertToPesewas(amountMajor);
       conversionNote = "converted_from_major_units";
     } else if (typeof amountMinorOverride === "number") {
-      // Heuristic: if provided amount looks like major units (e.g., 500 intended as GHS 500)
-      // and multiplying by 100 aligns with or is below the agreed fee, convert to pesewas.
-      const looksLikeMajor =
-        amountMinorOverride < 10000 && // < GHS 100
-        agreedFeeMinor >= 10000 && // course fee >= GHS 100
-        amountMinorOverride * 100 <= agreedFeeMinor * 1.01; // within tolerance
-      if (looksLikeMajor) {
-        amountMinor = amountMinorOverride * 100;
-        conversionNote = "heuristic_major_to_minor_conversion";
-      } else {
-        amountMinor = amountMinorOverride;
-      }
+      amountMinor = paystackService.convertToPesewas(amountMinorOverride);
+      conversionNote = "converted_from_minor_param_treated_as_major";
     }
 
     // Calculate whether this is an installment (amount less than remaining balance)
