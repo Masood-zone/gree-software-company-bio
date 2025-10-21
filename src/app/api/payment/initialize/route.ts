@@ -13,6 +13,8 @@ const initializePaymentSchema = z.object({
   amountMinor: z.number().int().positive().optional(),
   // Optional convenience: allow providing amount in major units (cedis)
   amountMajor: z.number().positive().optional(),
+  // Require the caller's userId to assert who is initiating the payment
+  userId: z.string().min(1),
 });
 
 export async function POST(req: Request) {
@@ -23,6 +25,7 @@ export async function POST(req: Request) {
       callbackUrl,
       amountMinor: amountMinorOverride,
       amountMajor,
+      userId,
     } = initializePaymentSchema.parse(body);
 
     // Load enrollment with user and course to determine amount and email
@@ -47,6 +50,17 @@ export async function POST(req: Request) {
       return NextResponse.json(
         { success: false, message: "Enrollment not found" },
         { status: 404 }
+      );
+    }
+
+    // Ensure the provided user is the owner of this enrollment
+    if (enrollment.userId !== userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Provided userId does not match enrollment owner",
+        },
+        { status: 403 }
       );
     }
 
@@ -138,6 +152,7 @@ export async function POST(req: Request) {
       metadata: {
         enrollmentId: enrollment.id,
         userId: enrollment.userId,
+        providedByUserId: userId,
         courseId: enrollment.courseId,
         program: enrollment.program,
         cohort: enrollment.cohort,
