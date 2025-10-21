@@ -28,17 +28,17 @@ export default function CourseSelectionModal({
     setShowEnrollmentForm(true);
   };
 
-  const handleBackToSelection = () => {
-    setShowEnrollmentForm(false);
-    setSelectedCourse(null);
-  };
+  // const handleBackToSelection = () => {
+  //   setShowEnrollmentForm(false);
+  //   setSelectedCourse(null);
+  // };
 
   if (showEnrollmentForm && selectedCourse) {
     return (
       <EnrollmentFormModal
         course={selectedCourse}
-        onBack={handleBackToSelection}
-        onClose={() => {
+        onBack={() => {
+          // close the enrollment form and the parent modal
           onOpenChange(false);
           setShowEnrollmentForm(false);
           setSelectedCourse(null);
