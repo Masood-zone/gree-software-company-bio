@@ -29,3 +29,12 @@ export const useRegisterUser = () => {
     mutationFn: registerUser,
   });
 };
+
+export const useUpdateUserProfile = () => {
+  return useMutation({
+    mutationFn: async (data: { id: string } & Partial<RegisterUserData>) => {
+      const response = await api.patch(`/api/users`, data);
+      return response.data.user;
+    },
+  });
+};

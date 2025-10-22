@@ -6,6 +6,7 @@ import CourseSelectionModal from "./course-selection-modal";
 import { useUserStore } from "@/stores/user-store";
 import UserLoginModal from "./user-login-modal";
 import EnrolledCoursesModal from "./enrolled-courses-modal";
+import EditProfileModal from "./edit-profile-modal";
 import ResourcesModal from "./resources-modal";
 import {
   DropdownMenu,
@@ -22,6 +23,7 @@ export default function Banner() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showEnrolledModal, setShowEnrolledModal] = useState(false);
   const [showResourcesModal, setShowResourcesModal] = useState(false);
+  const [showEditProfileModal, setShowEditProfileModal] = useState(false);
   const { user } = useUserStore();
 
   const handleJoinNow = () => {
@@ -106,8 +108,14 @@ export default function Banner() {
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Courses</DropdownMenuItem>
+                <DropdownMenuItem
+                  onSelect={() => setShowEditProfileModal(true)}
+                >
+                  Edit Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setShowEnrolledModal(true)}>
+                  Courses
+                </DropdownMenuItem>
                 <Button
                   onClick={() => {
                     useUserStore.getState().clearUser();
@@ -151,6 +159,11 @@ export default function Banner() {
         onOpenChange={setShowLoginModal}
         setShowRegistrationModal={setShowRegistrationModal}
         onSuccess={handleRegistrationSuccess}
+      />
+
+      <EditProfileModal
+        open={showEditProfileModal}
+        onOpenChange={setShowEditProfileModal}
       />
     </>
   );
