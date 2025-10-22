@@ -43,3 +43,12 @@ export interface PaymentInitResponse {
     paymentId: string;
   };
 }
+
+export type EnrollmentStatus = {
+  PENDING: string; // Submitted details, not paid yet
+  AWAITING_VERIFICATION: string; // Paid offline or pending PSP callback
+  PARTIALLY_PAID: string; // One or more installment payments made, not fully settled
+  PAID: string; // Successfully paid and verified
+  FAILED: string; // Payment failed
+  CANCELLED: string; // User cancelled or timed out
+};

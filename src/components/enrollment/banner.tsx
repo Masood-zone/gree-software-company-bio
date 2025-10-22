@@ -62,7 +62,7 @@ export default function Banner() {
 
           <div className="flex items-center justify-center gap-3 flex-wrap">
             <Button size="lg" onClick={handleJoinNow} className="rounded-full">
-              Join Now
+              {user ? "Enroll Now" : "Join Now"}
             </Button>
             {user && (
               <>
