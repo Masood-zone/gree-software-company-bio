@@ -3,6 +3,8 @@ import { prisma } from "@/lib/database/prisma";
 import { z } from "zod";
 import { paystackService } from "@/lib/paystack/paystack";
 import { EnrollmentStatus, PaymentMethod, PaymentStatus } from "@prisma/client";
+import { emailService } from "@/services/email/email-service";
+import { smsService } from "@/services/sms/sms-service";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +29,7 @@ export async function POST(req: Request) {
             feeCurrency: true,
             amountPaidMinor: true,
             course: true,
+            user: { select: { email: true, fullName: true, phone: true } },
           },
         },
       },
@@ -43,7 +46,16 @@ export async function POST(req: Request) {
         agreedFeeMinor: number | null;
         feeCurrency: string | null;
         amountPaidMinor: number;
-        course: { amount?: unknown; currency?: string | null } | null;
+        course: {
+          amount?: unknown;
+          currency?: string | null;
+          name?: string | null;
+        } | null;
+        user: {
+          email: string | null;
+          fullName: string | null;
+          phone: string | null;
+        } | null;
       };
     };
 
@@ -134,6 +146,60 @@ export async function POST(req: Request) {
           : EnrollmentStatus.PARTIALLY_PAID,
       },
     });
+
+    // Send notifications only when transitioning to SUCCESS (avoid duplicates)
+    if (
+      newPaymentStatus === PaymentStatus.SUCCESS &&
+      payment.status !== PaymentStatus.SUCCESS
+    ) {
+      try {
+        const email = payment.enrollment.user?.email ?? null;
+        const fullName = payment.enrollment.user?.fullName ?? undefined;
+        const phone = payment.enrollment.user?.phone ?? null;
+        const currency = updatedPayment.currency || payment.currency || "GHS";
+        const courseName = payment.enrollment.course?.name || "your course";
+
+        const paidMajor = (payment.amountMinor || 0) / 100;
+        const agreedMajor = agreedFeeMinor / 100;
+        const newTotalPaidMajor = newTotalPaid / 100;
+        const remainingMajor = Math.max(agreedMajor - newTotalPaidMajor, 0);
+
+        const html = `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+            <h2 style="color: #111827;">Payment Successful</h2>
+            <p>Hello ${fullName || email || "there"},</p>
+            <p>Your payment for <strong>${courseName}</strong> was successful.</p>
+            <ul>
+              <li>Amount paid: <strong>${currency} ${paidMajor.toLocaleString()}</strong></li>
+              <li>Total paid so far: <strong>${currency} ${newTotalPaidMajor.toLocaleString()}</strong></li>
+              <li>Total agreed fee: <strong>${currency} ${agreedMajor.toLocaleString()}</strong></li>
+              <li>Remaining balance: <strong>${currency} ${remainingMajor.toLocaleString()}</strong></li>
+            </ul>
+            <p>${remainingMajor > 0 ? "You can complete your remaining balance anytime from your dashboard." : "Your enrollment is now fully paid. Thank you!"}</p>
+            <p>— Gree Software Academy</p>
+          </div>
+        `;
+
+        if (email) {
+          await emailService
+            .sendEmail({
+              to: email,
+              subject: "Gree Software Academy - Payment Successful",
+              html,
+              text: `Payment successful. Paid: ${currency} ${paidMajor}. Total: ${currency} ${newTotalPaidMajor}. Remaining: ${currency} ${remainingMajor}.`,
+            })
+            .catch(() => {});
+        }
+
+        if (phone) {
+          const to = smsService.formatPhoneNumber(phone);
+          const msg = `GSA Payment Successful: Paid ${currency} ${paidMajor}. Total ${newTotalPaidMajor}. Remaining ${remainingMajor}.`;
+          await smsService.sendSMS({ to, message: msg }).catch(() => {});
+        }
+      } catch (notifyErr) {
+        console.error("Payment notifications failed", notifyErr);
+      }
+    }
 
     return NextResponse.json({
       success: true,

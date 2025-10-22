@@ -27,7 +27,7 @@ export default function PaymentModal({
   const { control, handleSubmit, watch } = useForm<{
     method: "CARD" | "MOBILE" | "BANK";
     type: "FULL" | "INSTALLMENT";
-    installments?: 3 | 6 | 12;
+    installments?: 2;
   }>({
     defaultValues: {
       method: "CARD",
@@ -43,9 +43,9 @@ export default function PaymentModal({
 
   const installmentAmount = useMemo(() => {
     if (paymentType === "FULL") return coursePrice;
-    if (!installmentDuration) return coursePrice;
-    return Math.ceil(coursePrice / installmentDuration);
-  }, [paymentType, installmentDuration, coursePrice]);
+    // Only 2-part installment: 50% now, 50% next month
+    return Math.ceil(coursePrice / 2);
+  }, [paymentType, coursePrice]);
 
   const onSubmit = () => {
     if (!user?.id) {
@@ -181,13 +181,11 @@ export default function PaymentModal({
                 control={control}
                 render={({ field }) => (
                   <RadioGroup
-                    value={field.value ? String(field.value) : undefined}
-                    onValueChange={(val) =>
-                      field.onChange(Number(val) as 3 | 6 | 12)
-                    }
+                    value={"2"}
+                    onValueChange={() => field.onChange(2)}
                     className="gap-2"
                   >
-                    {([3, 6, 12] as const).map((duration) => {
+                    {([2] as const).map((duration) => {
                       const id = `inst-${duration}`;
                       return (
                         <div
@@ -201,9 +199,7 @@ export default function PaymentModal({
                             </span>
                           </Label>
                           <span className="ml-auto text-sm text-muted-foreground">
-                            GHS{" "}
-                            {Math.ceil(coursePrice / duration).toLocaleString()}
-                            /mo
+                            GHS {Math.ceil(coursePrice / 2).toLocaleString()}/mo
                           </span>
                         </div>
                       );

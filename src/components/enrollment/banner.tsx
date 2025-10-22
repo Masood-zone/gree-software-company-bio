@@ -1,10 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import UserRegistrationModal from "./user-registeration-modal";
 import CourseSelectionModal from "./course-selection-modal";
 import { useUserStore } from "@/stores/user-store";
 import UserLoginModal from "./user-login-modal";
+import EnrolledCoursesModal from "./enrolled-courses-modal";
+import ResourcesModal from "./resources-modal";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +20,8 @@ export default function Banner() {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [showCourseModal, setShowCourseModal] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showEnrolledModal, setShowEnrolledModal] = useState(false);
+  const [showResourcesModal, setShowResourcesModal] = useState(false);
   const { user } = useUserStore();
 
   const handleJoinNow = () => {
@@ -35,6 +39,14 @@ export default function Banner() {
     setShowCourseModal(true);
   };
 
+  // Listen for global join action from the Embed modal
+  // When triggered, open the registration modal
+  useEffect(() => {
+    const handler = () => setShowRegistrationModal(true);
+    window.addEventListener("gree:open-registration", handler);
+    return () => window.removeEventListener("gree:open-registration", handler);
+  }, []);
+
   return (
     <>
       <section className="py-16 md:py-24 bg-gradient-to-br from-primary/10 to-secondary/10 relative">
@@ -48,9 +60,29 @@ export default function Banner() {
             courses. Learn from experts and build real-world projects.
           </p>
 
-          <Button size="lg" onClick={handleJoinNow} className="rounded-full">
-            Join Now
-          </Button>
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            <Button size="lg" onClick={handleJoinNow} className="rounded-full">
+              Join Now
+            </Button>
+            {user && (
+              <>
+                <Button
+                  variant="outline"
+                  onClick={() => setShowEnrolledModal(true)}
+                  className="rounded-full"
+                >
+                  Enrolled Courses
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowResourcesModal(true)}
+                  className="rounded-full"
+                >
+                  Resources
+                </Button>
+              </>
+            )}
+          </div>
         </div>
         {/* User Avatar */}
         <div className="absolute top-4 right-4">
@@ -102,6 +134,16 @@ export default function Banner() {
       <CourseSelectionModal
         open={showCourseModal}
         onOpenChange={setShowCourseModal}
+      />
+
+      <EnrolledCoursesModal
+        open={showEnrolledModal}
+        onOpenChange={setShowEnrolledModal}
+      />
+
+      <ResourcesModal
+        open={showResourcesModal}
+        onOpenChange={setShowResourcesModal}
       />
 
       <UserLoginModal

@@ -30,6 +30,9 @@ export async function GET(req: Request) {
           user: {
             select: { id: true, email: true, phone: true, fullName: true },
           },
+          course: {
+            select: { id: true, name: true, amount: true, currency: true },
+          },
           payments: true,
         },
       }),

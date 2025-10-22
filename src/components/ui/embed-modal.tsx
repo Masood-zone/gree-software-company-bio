@@ -104,6 +104,18 @@ export default function EmbedModal({
         <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-border">
           <h3 className="text-base sm:text-lg font-semibold">{title}</h3>
           <button
+            aria-label="Join Now"
+            onClick={() => {
+              handleClose();
+              try {
+                window.dispatchEvent(new Event("gree:open-registration"));
+              } catch {}
+            }}
+            className="hidden sm:inline-flex h-9 px-4 items-center justify-center rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors mr-2"
+          >
+            Join Now
+          </button>
+          <button
             aria-label="Close"
             onClick={handleClose}
             className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border hover:bg-secondary transition-colors"
