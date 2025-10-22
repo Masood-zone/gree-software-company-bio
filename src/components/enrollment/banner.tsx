@@ -4,10 +4,12 @@ import { Button } from "@/components/ui/button";
 import UserRegistrationModal from "./user-registeration-modal";
 import CourseSelectionModal from "./course-selection-modal";
 import { useUserStore } from "@/stores/user-store";
+import UserLoginModal from "./user-login-modal";
 
 export default function Banner() {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
   const [showCourseModal, setShowCourseModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const { user } = useUserStore();
 
   const handleJoinNow = () => {
@@ -45,12 +47,20 @@ export default function Banner() {
       <UserRegistrationModal
         open={showRegistrationModal}
         onOpenChange={setShowRegistrationModal}
+        setShowLoginModal={setShowLoginModal}
         onSuccess={handleRegistrationSuccess}
       />
 
       <CourseSelectionModal
         open={showCourseModal}
         onOpenChange={setShowCourseModal}
+      />
+
+      <UserLoginModal
+        open={showLoginModal}
+        onOpenChange={setShowLoginModal}
+        setShowRegistrationModal={setShowRegistrationModal}
+        onSuccess={handleRegistrationSuccess}
       />
     </>
   );

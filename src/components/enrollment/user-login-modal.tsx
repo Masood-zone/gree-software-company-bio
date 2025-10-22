@@ -1,57 +1,48 @@
 "use client";
-import { useForm } from "react-hook-form";
-import { useRegisterUser } from "@/services/users/users";
+import { useLoginUser } from "@/services/users/users";
 import { useUserStore } from "@/stores/user-store";
-import { Button } from "@/components/ui/button";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Input } from "../ui/input";
-import { useState } from "react";
+import { Button } from "../ui/button";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
-interface UserRegistrationModalProps {
+interface UserLoginModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  setShowLoginModal: (open: boolean) => void;
-  onSuccess: () => void;
+  setShowRegistrationModal?: (open: boolean) => void;
+  onSuccess?: () => void;
 }
 
-export default function UserRegistrationModal({
+export default function UserLoginModal({
   open,
   onOpenChange,
-  setShowLoginModal,
+  setShowRegistrationModal,
   onSuccess,
-}: UserRegistrationModalProps) {
+}: UserLoginModalProps) {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<{
-    fullName: string;
     email: string;
-    phone: string;
     password: string;
-    location: string;
   }>();
   const [showPassword, setShowPassword] = useState(false);
-  const { mutate: registerUserMutation, isPending } = useRegisterUser();
+  const { mutate: loginUserMutation, isPending } = useLoginUser();
   const { setUser } = useUserStore();
 
-  const onSubmit = (data: {
-    fullName: string;
-    email: string;
-    phone: string;
-    location: string;
-    password: string;
-  }) => {
-    registerUserMutation(data, {
+  const onSubmit = (data: { email: string; password: string }) => {
+    loginUserMutation(data, {
       onSuccess: (user) => {
+        toast.success(`Welcome back, ${user.fullName}!`);
         setUser(user);
-        toast.success(`Welcome to Gree Software Academy, ${user.fullName}!`);
         onOpenChange(false);
-        onSuccess();
+        onSuccess?.();
       },
       onError: (error) => {
-        toast.error(error.message || "Registration failed");
+        toast.error(error.message || "Login failed");
       },
     });
   };
@@ -64,9 +55,9 @@ export default function UserRegistrationModal({
         {/* Header */}
         <div className="border-b py-4 px-6 flex justify-between items-center">
           <div>
-            <h2 className="text-2xl font-bold">Join Gree Software Academy</h2>
+            <h2 className="text-2xl font-bold">User Login</h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Create your account to get started
+              Please enter your credentials to log in.
             </p>
           </div>
           <button
@@ -76,24 +67,8 @@ export default function UserRegistrationModal({
             ✕
           </button>
         </div>
-        {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="px-6 space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Full Name *
-            </label>
-            <Input
-              {...register("fullName", { required: "Full name is required" })}
-              type="text"
-              placeholder="Kwaku Mensah"
-            />
-            {errors.fullName && (
-              <p className="text-destructive text-sm mt-1">
-                {errors.fullName.message}
-              </p>
-            )}
-          </div>
-
+        {/* User Login Form */}
+        <form onSubmit={handleSubmit(onSubmit)} className="px-6 space-y-4 py-4">
           <div>
             <label className="block text-sm font-medium mb-2">
               Email Address *
@@ -112,34 +87,6 @@ export default function UserRegistrationModal({
             {errors.email && (
               <p className="text-destructive text-sm mt-1">
                 {errors.email.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">Phone *</label>
-            <Input
-              {...register("phone", { required: "Phone is required" })}
-              type="tel"
-              placeholder="0554476905"
-            />
-            {errors.phone && (
-              <p className="text-destructive text-sm mt-1">
-                {errors.phone.message}
-              </p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">Location *</label>
-            <Input
-              {...register("location", { required: "Location is required" })}
-              type="text"
-              placeholder="Assin Fosu"
-            />
-            {errors.location && (
-              <p className="text-destructive text-sm mt-1">
-                {errors.location.message}
               </p>
             )}
           </div>
@@ -170,7 +117,6 @@ export default function UserRegistrationModal({
               </p>
             )}
           </div>
-
           <Button
             type="submit"
             disabled={isPending}
@@ -179,25 +125,24 @@ export default function UserRegistrationModal({
             {isPending ? (
               <>
                 <Loader2 className="animate-spin mr-2" size={16} />
-                Creating Account...
+                Logging In...
               </>
             ) : (
-              "Create Account"
+              "Log In"
             )}
           </Button>
         </form>
-
         {/* User Login - Modal Redirection */}
-        <div className="px-6 py-4">
-          <span>Already have an account? </span>
+        <div className="px-6 pb-2">
+          <span>Don&apos;t have an account? </span>
           <button
             onClick={() => {
               onOpenChange(false);
-              setShowLoginModal(true);
+              setShowRegistrationModal?.(true);
             }}
             className="hover:underline"
           >
-            Log in
+            Sign up
           </button>
         </div>
       </div>

@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/database/prisma";
+import { randomBytes, scryptSync } from "crypto";
+import { emailService } from "@/services/email/email-service";
+import { smsService } from "@/services/sms/sms-service";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +11,7 @@ type RegisterBody = {
   phone?: string;
   fullName?: string;
   location?: string;
+  password?: string;
 };
 
 export async function POST(req: Request) {
@@ -17,6 +21,7 @@ export async function POST(req: Request) {
     const phone = body.phone?.trim();
     const fullName = body.fullName?.trim();
     const location = body.location?.trim();
+    const passwordRaw = body.password?.trim();
 
     if (!email || !phone) {
       return NextResponse.json(
@@ -24,46 +29,70 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-
-    // Try to find by email first
-    let user = await prisma.user.findUnique({ where: { email } });
-
-    // If not found by email, try by phone
-    if (!user) {
-      user = await prisma.user.findFirst({ where: { phone } });
+    if (!passwordRaw || passwordRaw.length < 6) {
+      return NextResponse.json(
+        { success: false, message: "Password must be at least 6 characters" },
+        { status: 400 }
+      );
     }
-
-    // Create if not existing
-    if (!user) {
-      user = await prisma.user.create({
-        data: {
-          email,
-          phone,
-          fullName: fullName || null,
-          location: location || null,
-        },
-      });
-      return NextResponse.json({ success: true, user, created: true });
-    }
-    // Existing user
-    const alreadyExists = await prisma.user.findFirst({
-      where: {
-        OR: [{ email }, { phone }],
-      },
+    // Check existence by email or phone
+    const existing = await prisma.user.findFirst({
+      where: { OR: [{ email }, { phone }] },
     });
-    if (alreadyExists) {
-      // Already exists with either email or phone should be more specific
+    if (existing) {
       return NextResponse.json(
         {
           success: false,
-          message: `User already exists with this ${
-            alreadyExists.email === email ? "email" : "phone"
-          }`,
+          message: "User already exists with this email or phone",
         },
         { status: 409 }
       );
     }
-    return NextResponse.json({ success: true, user, created: false });
+
+    // Hash password with Node's scrypt (salt:hash format)
+    const salt = randomBytes(16).toString("hex");
+    const derivedKey = scryptSync(passwordRaw, salt, 64).toString("hex");
+    const passwordHash = `${salt}:${derivedKey}`;
+
+    // Create user
+    const user = await prisma.user.create({
+      data: {
+        email,
+        phone,
+        fullName: fullName || null,
+        location: location || null,
+        password: passwordHash,
+      },
+    });
+
+    // Fire-and-forget notifications (do not block response)
+    (async () => {
+      try {
+        const origin =
+          req.headers.get("origin") || process.env.NEXT_PUBLIC_BASE_URL || "";
+        const signinUrl = origin ? `${origin}/` : "/";
+
+        // Use the AccountCreatedEmail component via the email service
+        await emailService
+          .sendAccountCreatedEmail({
+            userEmail: user.email,
+            userName: user.fullName || undefined,
+            signinUrl,
+          })
+          .catch(() => {});
+
+        // SMS welcome note
+        const phoneFormatted = smsService.formatPhoneNumber(user.phone);
+        const sms = `Welcome to Gree Software Academy, ${user.fullName || "there"}! Enroll in a course and choose flexible payment options. Learn more at our site.`;
+        await smsService
+          .sendSMS({ to: phoneFormatted, message: sms })
+          .catch(() => {});
+      } catch (e) {
+        console.error("Welcome notifications failed", e);
+      }
+    })();
+
+    return NextResponse.json({ success: true, user, created: true });
   } catch (err: unknown) {
     console.error("/api/users/register error", err);
     return NextResponse.json(
