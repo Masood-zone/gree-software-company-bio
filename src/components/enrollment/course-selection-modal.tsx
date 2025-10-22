@@ -87,7 +87,7 @@ export default function CourseSelectionModal({
                   </p>
                   <div className="flex justify-between items-center">
                     <span className="text-2xl font-bold text-primary">
-                      GHS {course.priceMinor || 0}
+                      GHS {course.amount ?? 0}
                     </span>
                     <Button
                       onClick={() => handleEnrollClick(course)}

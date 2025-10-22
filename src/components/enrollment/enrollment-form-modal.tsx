@@ -58,7 +58,7 @@ export default function EnrollmentFormModal({
     return (
       <PaymentModal
         enrollmentId={enrollmentId}
-        coursePrice={Math.max(0, Math.round((course.priceMinor ?? 0) / 100))}
+        coursePrice={Math.max(0, Number(course.amount ?? 0))}
         onBack={() => setShowPayment(false)}
       />
     );
@@ -83,7 +83,7 @@ export default function EnrollmentFormModal({
             <div className="p-3 bg-muted rounded-lg">
               <p className="font-semibold">{course.name}</p>
               <p className="text-sm text-muted-foreground">
-                GHS {course.priceMinor}
+                GHS {course.amount}
               </p>
             </div>
           </div>

@@ -90,14 +90,27 @@ export async function POST(req: Request) {
       );
     }
 
-    // Determine agreed fee for this enrollment: snapshot course.priceMinor unless already set on enrollment
-    const agreedFeeMinor =
+    // Determine agreed fee for this enrollment in MINOR units (pesewas):
+    // If already set on enrollment, use it. Else, derive from course.amount (major units) or provided amount.
+    let agreedFeeMinor: number | undefined =
       typeof enrollment.agreedFeeMinor === "number" &&
       enrollment.agreedFeeMinor > 0
         ? enrollment.agreedFeeMinor
-        : typeof course.priceMinor === "number" && course.priceMinor > 0
-        ? course.priceMinor
-        : amountMinorOverride;
+        : undefined;
+
+    if (!agreedFeeMinor) {
+      const courseAmountMajor = (course as any)?.amount
+        ? Number((course as any).amount)
+        : undefined;
+      if (typeof courseAmountMajor === "number" && courseAmountMajor > 0) {
+        agreedFeeMinor = paystackService.convertToPesewas(courseAmountMajor);
+      } else if (typeof amountMajor === "number") {
+        agreedFeeMinor = paystackService.convertToPesewas(amountMajor);
+      } else if (typeof amountMinorOverride === "number") {
+        // Treat provided minor override as MAJOR units for safety and convert
+        agreedFeeMinor = paystackService.convertToPesewas(amountMinorOverride);
+      }
+    }
 
     if (!agreedFeeMinor) {
       return NextResponse.json(

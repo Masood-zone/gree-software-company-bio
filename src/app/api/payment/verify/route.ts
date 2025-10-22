@@ -16,7 +16,8 @@ export async function POST(req: Request) {
     const { reference } = verifySchema.parse(body);
 
     // Find existing payment by reference
-    const payment = await prisma.payment.findUnique({
+    // Temporary cast to unknown to avoid Prisma type mismatch until migrations are applied
+    const payment = (await prisma.payment.findUnique({
       where: { reference },
       include: {
         enrollment: {
@@ -25,11 +26,26 @@ export async function POST(req: Request) {
             agreedFeeMinor: true,
             feeCurrency: true,
             amountPaidMinor: true,
-            course: { select: { priceMinor: true, currency: true } },
+            course: true,
           },
         },
       },
-    });
+    })) as unknown as {
+      id: string;
+      enrollmentId: string;
+      amountMinor: number;
+      currency: string;
+      metadata: unknown;
+      status: PaymentStatus;
+      paystackAuth: string | null;
+      enrollment: {
+        id: string;
+        agreedFeeMinor: number | null;
+        feeCurrency: string | null;
+        amountPaidMinor: number;
+        course: { amount?: unknown; currency?: string | null } | null;
+      };
+    };
 
     if (!payment) {
       return NextResponse.json(
@@ -57,8 +73,8 @@ export async function POST(req: Request) {
       data.status === "success"
         ? PaymentStatus.SUCCESS
         : data.status === "failed"
-        ? PaymentStatus.FAILED
-        : PaymentStatus.PENDING;
+          ? PaymentStatus.FAILED
+          : PaymentStatus.PENDING;
 
     // Derive method from channel
     const method: PaymentMethod = (() => {
@@ -94,10 +110,11 @@ export async function POST(req: Request) {
       typeof payment.enrollment.agreedFeeMinor === "number" &&
       payment.enrollment.agreedFeeMinor > 0
         ? payment.enrollment.agreedFeeMinor
-        : typeof payment.enrollment.course?.priceMinor === "number" &&
-          payment.enrollment.course?.priceMinor > 0
-        ? payment.enrollment.course.priceMinor!
-        : payment.amountMinor || 0;
+        : payment.enrollment.course?.amount
+          ? paystackService.convertToPesewas(
+              Number(payment.enrollment.course.amount as unknown as number)
+            )
+          : payment.amountMinor || 0;
 
     const increment =
       newPaymentStatus === PaymentStatus.SUCCESS ? payment.amountMinor || 0 : 0;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/database/prisma";
 import type { Prisma } from "@prisma/client";
@@ -55,8 +56,8 @@ export async function POST(req: Request) {
     const body = await req.json();
     const name: string | undefined = body?.name?.trim();
     const description: string | undefined = body?.description?.trim();
-    const priceMinor: number | undefined =
-      typeof body?.priceMinor === "number" ? body.priceMinor : undefined;
+    const amount: number | undefined =
+      typeof body?.amount === "number" ? body.amount : undefined;
     const currency: string | undefined = body?.currency?.trim();
     const active: boolean | undefined =
       typeof body?.active === "boolean" ? body.active : undefined;
@@ -81,11 +82,13 @@ export async function POST(req: Request) {
       );
     }
 
-    const course = await prisma.course.create({
+    // Temporarily cast to unknown to avoid type mismatch until Prisma client is regenerated
+    const course = await (prisma as any).course.create({
       data: {
         name,
         description: description || null,
-        priceMinor: typeof priceMinor === "number" ? priceMinor : null,
+        // amount is in major units (e.g., GHS)
+        amount: typeof amount === "number" ? amount : null,
         currency: currency || undefined, // default applies if undefined
         active: typeof active === "boolean" ? active : undefined,
       },

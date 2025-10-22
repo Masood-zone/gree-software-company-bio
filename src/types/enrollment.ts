@@ -2,7 +2,7 @@ export interface Course {
   id: string;
   name: string;
   description?: string | null;
-  priceMinor?: number | null; // amount in pesewas
+  amount?: number | null; // amount in major units (e.g., GHS)
   currency?: string | null; // e.g., "GHS"
   active: boolean;
   createdAt: string; // ISO string from API

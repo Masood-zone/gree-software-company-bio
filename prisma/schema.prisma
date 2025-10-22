@@ -113,7 +113,7 @@ model Course {
   id          String   @id @default(cuid())
   name        String   @unique
   description String?
-  priceMinor  Int?     // if per-course pricing is needed
+  amount      Decimal? @db.Decimal(10, 2) // amount in major currency units (e.g., GHS)
   currency    String?  @default("GHS")
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
