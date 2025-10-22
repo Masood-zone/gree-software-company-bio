@@ -1,7 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { X } from "lucide-react";
+import BannerImage from "@/assets/images/Gree-Banner.png";
 
 type EmbedModalProps = {
   embedSrc?: string;
@@ -22,7 +24,6 @@ type EmbedModalProps = {
 };
 
 export default function EmbedModal({
-  embedSrc = "https://www.canva.com/design/DAG2FTqGdKY/xOlv9vISov3eJ1rzZAi7CQ/view?embed",
   title = "Featured Presentation",
   storageKey = "gree:hasSeenCanvaEmbed",
   storage = "session",
@@ -124,17 +125,15 @@ export default function EmbedModal({
           </button>
         </div>
 
-        {/* Content: Responsive embed wrapper */}
+        {/* Content: Show promo image instead of embedded presentation */}
         <div className="p-3 sm:p-4">
-          {/* Responsive ratio: keep previous mobile ratio, tighter on desktop */}
-          <div className="relative w-full pt-[70.7071%] md:pt-[50%] rounded-xl overflow-hidden shadow-sm bg-secondary/30">
-            <iframe
-              loading="lazy"
-              className="absolute inset-0 h-full w-full border-0 transition-transform duration-300 ease-out md:scale-[1.05] md:origin-center"
-              style={{ transform: undefined }}
-              src={embedSrc}
-              allowFullScreen
-              allow="fullscreen"
+          <div className="relative w-full rounded-xl overflow-hidden shadow-sm bg-secondary/30">
+            <Image
+              src={BannerImage}
+              alt="Gree Software Academy - Computer Classes promotional banner"
+              priority
+              placeholder="empty"
+              className="w-full h-auto"
             />
           </div>
 
