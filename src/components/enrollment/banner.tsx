@@ -51,7 +51,10 @@ export default function Banner() {
 
   return (
     <>
-      <section className="py-16 md:py-24 bg-gradient-to-br from-primary/10 to-secondary/10 relative">
+      <section
+        id="academy"
+        className="py-16 md:py-24 bg-gradient-to-br from-primary/10 to-secondary/10 relative"
+      >
         {/* Section */}
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
@@ -75,13 +78,13 @@ export default function Banner() {
                 >
                   Enrolled Courses
                 </Button>
-                <Button
+                {/* <Button
                   variant="secondary"
                   onClick={() => setShowResourcesModal(true)}
                   className="rounded-full"
                 >
                   Resources
-                </Button>
+                </Button> */}
               </>
             )}
           </div>

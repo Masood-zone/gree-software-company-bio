@@ -73,10 +73,10 @@ export default function Navbar() {
             ))}
             <ThemeToggle />
             <Link
-              href="/contact"
-              className="bg-primary text-primary-foreground px-6 py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors"
+              href="/#academy"
+              className="relative rounded-full px-6 py-2 text-sm font-medium bg-primary text-primary-foreground shadow-[0_0_20px_rgba(59,130,246,0.45)] hover:shadow-[0_0_30px_rgba(59,130,246,0.65)] transition-all animate-pulse"
             >
-              Get Started
+              Join Our School Now
             </Link>
           </div>
 
@@ -110,6 +110,13 @@ export default function Navbar() {
                   {item.name}
                 </Link>
               ))}
+              <Link
+                href="/#academy"
+                className="block px-3 py-2 mt-2 text-center rounded-full font-medium bg-primary text-primary-foreground shadow-[0_0_20px_rgba(59,130,246,0.45)] hover:shadow-[0_0_30px_rgba(59,130,246,0.65)] transition-all animate-pulse"
+                onClick={() => setIsOpen(false)}
+              >
+                Join Classes
+              </Link>
               <Link
                 href="/contact"
                 className="block px-3 py-2 mt-4 bg-primary text-primary-foreground text-center rounded-full font-medium"

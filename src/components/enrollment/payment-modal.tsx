@@ -122,20 +122,22 @@ export default function PaymentModal({
                   onValueChange={field.onChange}
                   className="gap-2"
                 >
-                  {(["CARD", "MOBILE", "BANK"] as const).map((method) => {
-                    const id = `method-${method.toLowerCase()}`;
-                    return (
-                      <div
-                        key={method}
-                        className="flex items-center space-x-2 p-2 border border-border rounded-lg"
-                      >
-                        <RadioGroupItem value={method} id={id} />
-                        <Label htmlFor={id} className="capitalize">
-                          {method}
-                        </Label>
-                      </div>
-                    );
-                  })}
+                  {(["CREDIT CARD", "MOBILE MONEY", "BANK"] as const).map(
+                    (method) => {
+                      const id = `method-${method.toLowerCase()}`;
+                      return (
+                        <div
+                          key={method}
+                          className="flex items-center space-x-2 p-2 border border-border rounded-lg"
+                        >
+                          <RadioGroupItem value={method} id={id} />
+                          <Label htmlFor={id} className="capitalize">
+                            {method}
+                          </Label>
+                        </div>
+                      );
+                    }
+                  )}
                 </RadioGroup>
               )}
             />
@@ -152,20 +154,22 @@ export default function PaymentModal({
                   onValueChange={field.onChange}
                   className="gap-2"
                 >
-                  {(["FULL", "INSTALLMENT"] as const).map((type) => {
-                    const id = `type-${type.toLowerCase()}`;
-                    return (
-                      <div
-                        key={type}
-                        className="flex items-center space-x-2 p-2 border border-border rounded-lg"
-                      >
-                        <RadioGroupItem value={type} id={id} />
-                        <Label htmlFor={id} className="capitalize">
-                          {type}
-                        </Label>
-                      </div>
-                    );
-                  })}
+                  {(["FULL PAYMENT", "PAY IN INSTALLMENT"] as const).map(
+                    (type) => {
+                      const id = `type-${type.toLowerCase()}`;
+                      return (
+                        <div
+                          key={type}
+                          className="flex items-center space-x-2 p-2 border border-border rounded-lg"
+                        >
+                          <RadioGroupItem value={type} id={id} />
+                          <Label htmlFor={id} className="capitalize">
+                            {type}
+                          </Label>
+                        </div>
+                      );
+                    }
+                  )}
                 </RadioGroup>
               )}
             />
