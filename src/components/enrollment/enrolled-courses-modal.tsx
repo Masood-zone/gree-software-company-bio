@@ -5,7 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import api from "@/services/api";
 import { EnrollmentStatus } from "@/types/enrollment";
 import { Badge } from "../ui/badge";
-import { useProcessPayment } from "@/services/payments/payments";
+import {
+  useProcessPayment,
+  useVerifyPayment,
+} from "@/services/payments/payments";
 import { Button } from "../ui/button";
 
 type Props = {
@@ -16,6 +19,7 @@ type Props = {
 export default function EnrolledCoursesModal({ open, onOpenChange }: Props) {
   const user = useUserStore((s) => s.user);
   const [payingId, setPayingId] = useState<string | null>(null);
+  const [verifyingId, setVerifyingId] = useState<string | null>(null);
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["enrollments", user?.id],
@@ -28,6 +32,14 @@ export default function EnrolledCoursesModal({ open, onOpenChange }: Props) {
         createdAt: string;
         amountPaidMinor: number;
         agreedFeeMinor: number;
+        payments?: Array<{
+          id: string;
+          reference: string;
+          status: string;
+          createdAt: string;
+          updatedAt: string;
+          metadata?: unknown;
+        }>;
         course?: {
           id: string;
           name: string;
@@ -42,6 +54,8 @@ export default function EnrolledCoursesModal({ open, onOpenChange }: Props) {
     isPending,
     isError,
   } = useProcessPayment();
+  const { mutateAsync: verifyPayment, isPending: isVerifying } =
+    useVerifyPayment();
 
   useEffect(() => {
     if (open && user?.id) refetch();
@@ -84,6 +98,7 @@ export default function EnrolledCoursesModal({ open, onOpenChange }: Props) {
         enrollmentId: en.id,
         userId: user.id,
         amountMajor: amountLeftMajor,
+        callbackUrl: `${window.location.origin}/gree-software-academy/checkout?next=${encodeURIComponent("/")}`,
       });
       const url = res?.data?.authorization_url;
       if (url) {
@@ -93,6 +108,41 @@ export default function EnrolledCoursesModal({ open, onOpenChange }: Props) {
       console.error("Failed to initialize payment:", e);
     } finally {
       setPayingId(null);
+    }
+  };
+
+  const handleVerifyNow = async (en: {
+    id: string;
+    payments?: Array<{
+      id: string;
+      reference: string;
+      status: string;
+      createdAt: string;
+      updatedAt: string;
+    }>;
+  }) => {
+    // Find the most recent INITIATED/PENDING payment reference for this enrollment
+    const payments = en.payments ?? [];
+    if (!payments.length) return;
+    const sorted = [...payments].sort(
+      (a, b) =>
+        new Date(b.updatedAt || b.createdAt).getTime() -
+        new Date(a.updatedAt || a.createdAt).getTime()
+    );
+    const candidate =
+      sorted.find((p) => p.status === "INITIATED" || p.status === "PENDING") ||
+      sorted[0];
+    if (!candidate?.reference) return;
+    try {
+      setVerifyingId(en.id);
+      const res = await verifyPayment(candidate.reference);
+      if (res?.success) {
+        await refetch();
+      }
+    } catch (e) {
+      console.error("Verification failed:", e);
+    } finally {
+      setVerifyingId(null);
     }
   };
 
@@ -203,6 +253,21 @@ export default function EnrolledCoursesModal({ open, onOpenChange }: Props) {
                             style={{ width: `${paidPct}%` }}
                           />
                         </div>
+
+                        {en.status === "AWAITING_VERIFICATION" && (
+                          <div className="pt-2">
+                            <Button
+                              onClick={() => handleVerifyNow(en)}
+                              disabled={isVerifying || verifyingId === en.id}
+                              variant="secondary"
+                              className="w-full"
+                            >
+                              {verifyingId === en.id
+                                ? "Verifying…"
+                                : "Verify payment now"}
+                            </Button>
+                          </div>
+                        )}
 
                         {en.status !== "PAID" && amountLeft > 0 && (
                           <div className="pt-2">
