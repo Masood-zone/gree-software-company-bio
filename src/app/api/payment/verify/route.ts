@@ -196,6 +196,35 @@ export async function POST(req: Request) {
           const msg = `GSA Payment Successful: Paid ${currency} ${paidMajor}. Total ${newTotalPaidMajor}. Remaining ${remainingMajor}.`;
           await smsService.sendSMS({ to, message: msg }).catch(() => {});
         }
+        // Notify admins with summary (+ CSV attachment)
+        const adminEmails = [
+          process.env.ADMIN_EMAIL_1,
+          process.env.ADMIN_EMAIL_2,
+        ].filter((v): v is string => !!v);
+
+        const paidAtIso =
+          (data.paid_at as string | undefined) || new Date().toISOString();
+        await Promise.all(
+          adminEmails.map((adminEmail) =>
+            emailService
+              .sendPaymentSuccessfulSummaryEmail({
+                adminEmail,
+                purchaserName: fullName || null,
+                purchaserEmail: email,
+                purchaserPhone: phone,
+                courseName,
+                currency,
+                paidMajor,
+                totalPaidMajor: newTotalPaidMajor,
+                agreedMajor,
+                remainingMajor,
+                method: method.toString(),
+                reference,
+                paidAt: paidAtIso,
+              })
+              .catch(() => {})
+          )
+        );
       } catch (notifyErr) {
         console.error("Payment notifications failed", notifyErr);
       }
