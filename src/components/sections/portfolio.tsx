@@ -16,12 +16,12 @@ export default function Portfolio() {
     {
       title: "Canteen Management System",
       description:
-        "A comprehensive platform for managing canteen operations, including menu management, order processing, and payment integration.",
+        "A comprehensive platform for managing school canteen operations, including menu management, order processing, and payment integration. All while ensuring a user-friendly experience for students and staff. With offline capabilities to ensure uninterrupted service.",
       image: "/cms-logo.svg",
       category: "Web Application",
       badgeColor:
         "bg-blue-100 text-blue-800 dark:bg-bzlue-900 dark:text-blue-200",
-      link: "https://canteen-management-system-private-s.vercel.app",
+      link: "https://gree-canteen.vercel.app",
     },
     {
       title: "Farzel",
