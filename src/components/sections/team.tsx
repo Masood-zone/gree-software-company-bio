@@ -1,13 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Github, Linkedin, Facebook } from "lucide-react";
+import { Facebook, Github, Linkedin, Phone } from "lucide-react";
 
 export default function Team() {
   const teamMembers = [
     {
       name: "Dickson Osei Yeboah",
       role: "Founder & CEO",
-      image: "/yeboah.png",
+      image: "/yeboah.jpg",
       bio: "Visionary leader with expertise in software architecture and business strategy. Passionate about creating innovative solutions that drive business growth.",
       social: {
         linkedin: "https://www.linkedin.com/in/dickson-osei-yeboah-56884728b/",
@@ -18,7 +18,7 @@ export default function Team() {
     {
       name: "Masood Acheampong",
       role: "Co-Founder & Managing Director",
-      image: "/masood.png",
+      image: "/masood.jpg",
       bio: "Technical expert with deep knowledge in full-stack development and project management. Committed to delivering high-quality software solutions.",
       social: {
         linkedin: "https://www.linkedin.com/in/masood-acheampong-3793b4239",
@@ -43,55 +43,47 @@ export default function Team() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-10 max-w-5xl mx-auto">
           {teamMembers.map((member, index) => (
             <div
               key={index}
-              className="bg-background rounded-2xl p-8 text-center border border-border hover:shadow-lg transition-all duration-300 animate-fade-in-up"
+              className="group rounded-[2rem] bg-white p-4 sm:p-5 shadow-[0_20px_60px_rgba(0,0,0,0.08)] transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_28px_70px_rgba(0,0,0,0.14)] animate-fade-in-up"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="relative w-32 h-32 mx-auto mb-6">
+              <div className="mb-4 px-2 pt-1 text-left">
+                <h3 className="text-[1.35rem] sm:text-[1.5rem] font-semibold tracking-tight text-foreground">
+                  {member.name}
+                </h3>
+                <p className="mt-1 text-base sm:text-lg text-foreground/80">
+                  {member.role}
+                </p>
+              </div>
+
+              <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-muted">
                 <Image
                   src={member.image || "/placeholder.svg"}
                   alt={member.name}
                   fill
-                  className="object-cover rounded-full"
+                  className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.04]"
                 />
               </div>
-              <h3 className="text-xl font-bold mb-2">{member.name}</h3>
-              <p className="text-primary font-medium mb-4">{member.role}</p>
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                {member.bio}
-              </p>
 
-              <div className="flex justify-center space-x-4">
+              <div className="flex justify-center gap-4 pt-4 pb-1 opacity-0 translate-y-2 pointer-events-none transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto">
                 {member.social.tel && (
                   <Link
                     href={member.social.tel}
-                    className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-foreground/90 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                     aria-label="Phone"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                      />
-                    </svg>
+                    <Phone size={18} />
                   </Link>
                 )}
                 {member.social.linkedin && (
                   <Link
                     href={member.social.linkedin}
                     target="_blank"
-                    className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-foreground/90 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                     aria-label="LinkedIn"
                   >
                     <Linkedin size={20} />
@@ -101,7 +93,8 @@ export default function Team() {
                   <Link
                     href={member.social.github}
                     target="_blank"
-                    className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-foreground/90 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                     aria-label="GitHub"
                   >
                     <Github size={20} />
@@ -111,7 +104,8 @@ export default function Team() {
                   <Link
                     href={member.social.facebook}
                     target="_blank"
-                    className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors"
+                    rel="noopener noreferrer"
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-foreground/90 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                     aria-label="Facebook"
                   >
                     <Facebook size={20} />
