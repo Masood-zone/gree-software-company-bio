@@ -4,14 +4,6 @@ import { teamMembers } from "@/lib/team-members";
 const absoluteUrl = (pathOrUrl: string) =>
   new URL(pathOrUrl, siteUrl).toString();
 
-const withoutContext = ({
-  "@context": context,
-  ...schema
-}: (typeof teamMemberSchemas)[number]) => {
-  void context;
-  return schema;
-};
-
 export const teamMemberSchemas = teamMembers.map((member) => ({
   "@context": "https://schema.org",
   "@type": "Person",
@@ -31,6 +23,14 @@ export const teamMemberSchemas = teamMembers.map((member) => ({
     .filter(([key]) => key !== "tel")
     .map(([, value]) => value),
 }));
+
+const withoutContext = ({
+  "@context": context,
+  ...schema
+}: (typeof teamMemberSchemas)[number]) => {
+  void context;
+  return schema;
+};
 
 export const organizationSchema = {
   "@context": "https://schema.org",
