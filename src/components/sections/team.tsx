@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Facebook, Github, Linkedin, Phone } from "lucide-react";
+import { Github, Linkedin, Phone } from "lucide-react";
 import { teamMembers } from "@/lib/team-members";
 
 export default function Team() {
@@ -91,7 +91,7 @@ export default function Team() {
                     <Github size={20} />
                   </Link>
                 )}
-                {member.social.facebook && (
+                {/* {member.social.facebook && (
                   <Link
                     href={member.social.facebook}
                     target="_blank"
@@ -102,7 +102,7 @@ export default function Team() {
                   >
                     <Facebook size={20} />
                   </Link>
-                )}
+                )} */}
               </div>
             </div>
           ))}
