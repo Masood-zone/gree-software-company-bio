@@ -5,7 +5,7 @@ import { Open_Sans, Urbanist } from "next/font/google";
 import Navbar from "@/components/layout/navbar";
 import Footer from "@/components/layout/footer";
 import { generateSEO } from "@/lib/seo";
-import { organizationSchema } from "@/lib/structured-data";
+import { organizationSchema, websiteSchema } from "@/lib/structured-data";
 import Providers from "@/providers/providers";
 
 export const metadata: Metadata = generateSEO({
@@ -63,7 +63,7 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
+            __html: JSON.stringify([organizationSchema, websiteSchema]),
           }}
         />
       </head>

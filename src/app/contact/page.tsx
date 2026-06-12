@@ -4,11 +4,13 @@ import ContactForm from "@/components/sections/contact-form";
 import ContactInfo from "@/components/sections/contact-info";
 
 export const metadata = generateSEO({
-  title: "Contact Us - Get Your Project Started",
+  title: "Contact Gree Software Company",
   description:
-    "Ready to transform your business with custom software? Contact Gree Software Company today for a free consultation and project quote.",
+    "Contact Gree Software Company in Kumasi, Ghana for web development, mobile app development, software consulting, hosting, and project quotes.",
   keywords: [
+    "contact Gree Software Company",
     "contact software company",
+    "software company Kumasi",
     "project consultation",
     "software development quote",
     "ghana software services",

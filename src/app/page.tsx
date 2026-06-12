@@ -10,9 +10,19 @@ import EmbedModal from "@/components/ui/embed-modal";
 import Banner from "@/components/enrollment/banner";
 
 export const metadata = generateSEO({
-  title: "Professional Software Development Services",
+  title: "Gree Software Company - Software Development in Ghana",
   description:
-    "Transform your business with custom web development, mobile apps, desktop applications, and reliable hosting services. Get started with Gree Software Company today.",
+    "Gree Software Company builds custom websites, mobile apps, desktop applications, hosting solutions, and practical technology training for businesses in Ghana and beyond.",
+  keywords: [
+    "Gree Software Company",
+    "software company in Ghana",
+    "web development Ghana",
+    "mobile app development Ghana",
+    "desktop application development",
+    "Gree Software Academy",
+    "Dickson Osei Yeboah",
+    "Masood Acheampong",
+  ],
   canonical: "/",
 });
 
