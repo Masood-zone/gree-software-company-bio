@@ -1,13 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import axios from "axios";
 
-const PAYSTACK_SECRET_KEY = process.env.PAYSTACK_SECRET_KEY;
 const PAYSTACK_PUBLIC_KEY = process.env.PAYSTACK_PUBLIC_KEY;
 const PAYSTACK_BASE_URL = "https://api.paystack.co";
-
-if (!PAYSTACK_SECRET_KEY) {
-  throw new Error("PAYSTACK_SECRET_KEY is required");
-}
 
 export interface PaystackInitializeData {
   email: string;
@@ -88,19 +83,27 @@ export interface PaystackVerifyResponse {
 }
 
 class PaystackService {
-  private apiClient = axios.create({
-    baseURL: PAYSTACK_BASE_URL,
-    headers: {
-      Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,
-      "Content-Type": "application/json",
-    },
-  });
+  private getApiClient() {
+    const secretKey = process.env.PAYSTACK_SECRET_KEY;
+
+    if (!secretKey) {
+      throw new Error("PAYSTACK_SECRET_KEY is required");
+    }
+
+    return axios.create({
+      baseURL: PAYSTACK_BASE_URL,
+      headers: {
+        Authorization: `Bearer ${secretKey}`,
+        "Content-Type": "application/json",
+      },
+    });
+  }
 
   async initializeTransaction(
     data: PaystackInitializeData
   ): Promise<PaystackInitializeResponse> {
     try {
-      const response = await this.apiClient.post("/transaction/initialize", {
+      const response = await this.getApiClient().post("/transaction/initialize", {
         ...data,
         currency: data.currency || "GHS", // Ghana Cedis
         channels: data.channels || ["card", "mobile_money"],
@@ -120,7 +123,7 @@ class PaystackService {
 
   async verifyTransaction(reference: string): Promise<PaystackVerifyResponse> {
     try {
-      const response = await this.apiClient.get(
+      const response = await this.getApiClient().get(
         `/transaction/verify/${reference}`
       );
       return response.data;
@@ -137,7 +140,7 @@ class PaystackService {
 
   async refundTransaction(reference: string, amount?: number): Promise<any> {
     try {
-      const response = await this.apiClient.post("/refund", {
+      const response = await this.getApiClient().post("/refund", {
         transaction: reference,
         amount: amount, // in kobo, if not provided, full refund
       });
