@@ -103,11 +103,14 @@ class PaystackService {
     data: PaystackInitializeData
   ): Promise<PaystackInitializeResponse> {
     try {
-      const response = await this.getApiClient().post("/transaction/initialize", {
-        ...data,
-        currency: data.currency || "GHS", // Ghana Cedis
-        channels: data.channels || ["card", "mobile_money"],
-      });
+      const response = await this.getApiClient().post(
+        "/transaction/initialize",
+        {
+          ...data,
+          currency: data.currency || "GHS", // Ghana Cedis
+          channels: data.channels || ["card", "mobile_money"],
+        }
+      );
 
       return response.data;
     } catch (error: any) {
