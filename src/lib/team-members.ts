@@ -1,6 +1,6 @@
 export const teamMembers = [
   {
-    name: "Edem",
+    name: "DKB",
     role: "Founder & CEO",
     image: "/yeboah.jpg",
     bio: "Visionary leader with expertise in software architecture and business strategy. Passionate about creating innovative solutions that drive business growth.",
