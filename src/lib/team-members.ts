@@ -1,6 +1,6 @@
 export const teamMembers = [
   {
-    name: "DKB",
+    name: "Edem",
     role: "Founder & CEO",
     image: "/yeboah.jpg",
     bio: "Visionary leader with expertise in software architecture and business strategy. Passionate about creating innovative solutions that drive business growth.",
@@ -12,7 +12,7 @@ export const teamMembers = [
     },
   },
   {
-    name: "Bugatti",
+    name: "Masood Acheampong",
     role: "Co-Founder & Managing Director",
     image: "/masood.jpg",
     bio: "Technical expert with deep knowledge in full-stack development and project management. Committed to delivering high-quality software solutions.",
