@@ -12,7 +12,7 @@ export const teamMembers = [
     },
   },
   {
-    name: "Masood Acheampong",
+    name: "Bugatti",
     role: "Co-Founder & Managing Director",
     image: "/masood.jpg",
     bio: "Technical expert with deep knowledge in full-stack development and project management. Committed to delivering high-quality software solutions.",
