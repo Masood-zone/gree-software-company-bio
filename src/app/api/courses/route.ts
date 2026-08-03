@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/database/prisma";
 import type { Prisma } from "@prisma/client";
+import { requireAdmin } from "@/lib/auth/guards";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,13 @@ export async function GET(req: Request) {
     const skip = parseInt(searchParams.get("skip") || "0", 10);
     const activeParam = searchParams.get("active");
     const search = searchParams.get("search")?.trim();
+
+    if (activeParam !== "true" && !(await requireAdmin(req))) {
+      return NextResponse.json(
+        { success: false, message: "Administrator access required" },
+        { status: 403 }
+      );
+    }
 
     const where: Prisma.CourseWhereInput = {};
     if (activeParam === "true") where.active = true;
@@ -52,6 +60,12 @@ export async function GET(req: Request) {
 
 // POST /api/courses
 export async function POST(req: Request) {
+  if (!(await requireAdmin(req))) {
+    return NextResponse.json(
+      { success: false, message: "Administrator access required" },
+      { status: 403 }
+    );
+  }
   try {
     const body = await req.json();
     const name: string | undefined = body?.name?.trim();
@@ -106,6 +120,12 @@ export async function POST(req: Request) {
 
 // DELETE /api/courses?id=courseId
 export async function DELETE(req: Request) {
+  if (!(await requireAdmin(req))) {
+    return NextResponse.json(
+      { success: false, message: "Administrator access required" },
+      { status: 403 }
+    );
+  }
   try {
     const url = new URL(req.url);
     let id = url.searchParams.get("id") || undefined;

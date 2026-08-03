@@ -38,7 +38,6 @@ export interface PaymentInitResponse {
   success: boolean;
   data: {
     authorization_url: string;
-    access_code: string;
     reference: string;
     paymentId: string;
   };

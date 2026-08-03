@@ -148,7 +148,13 @@ export default function UserRegistrationModal({
             <label className="block text-sm font-medium mb-2">Password *</label>
             <div className="relative">
               <Input
-                {...register("password", { required: "Password is required" })}
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters",
+                },
+              })}
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
               />

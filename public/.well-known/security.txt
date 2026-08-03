@@ -1,0 +1,4 @@
+Contact: mailto:masoodacheampong@gmail.com
+Expires: 2027-08-01T23:59:59Z
+Preferred-Languages: en
+Canonical: https://www.greesoftwarecompany.com/.well-known/security.txt

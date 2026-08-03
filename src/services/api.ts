@@ -11,7 +11,7 @@ const api: AxiosInstance = axios.create({
     Accept: "application/json",
     "X-Requested-With": "XMLHttpRequest",
   },
-  withCredentials: false,
+  withCredentials: true,
 });
 
 export default api;

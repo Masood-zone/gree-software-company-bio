@@ -34,3 +34,27 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Security and authentication setup
+
+Copy `.env.example` to `.env.local` for local development. Generate
+`BETTER_AUTH_SECRET` with a cryptographically secure random generator and never
+commit the real value.
+
+Before deploying the authentication migration:
+
+1. Back up the production database.
+2. Configure `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, and
+   `NEXT_PUBLIC_BASE_URL` in Vercel for every applicable environment. Production
+   URLs should use `https://www.greesoftwarecompany.com`.
+3. Run `npx prisma migrate deploy` against the intended database.
+4. Deploy the application and confirm login, logout, enrollment ownership, and
+   payment verification before allowing normal traffic.
+
+The migration promotes `masoodacheampong@gmail.com` to the administrator role.
+All other accounts default to the user role. Rotate the Better Auth secret and
+integration credentials through Vercel if exposure is suspected; rotating the
+auth secret invalidates existing sessions.
+
+Report security issues using the contact published at
+`/.well-known/security.txt`.

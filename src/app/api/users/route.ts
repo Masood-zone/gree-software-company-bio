@@ -1,42 +1,52 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/database/prisma";
-import { randomBytes, scryptSync } from "crypto";
+import {
+  requireAdmin,
+  requireAuthenticatedUser,
+} from "@/lib/auth/guards";
+import { auth } from "@/lib/auth";
+import { hashPassword } from "@/lib/auth/password";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(req: Request) {
-  try {
-    const { searchParams } = new URL(req.url);
-    const take = Math.min(parseInt(searchParams.get("take") || "50", 10), 100);
-    const skip = parseInt(searchParams.get("skip") || "0", 10);
+const publicUserSelect = {
+  id: true,
+  email: true,
+  phone: true,
+  fullName: true,
+  location: true,
+  role: true,
+  createdAt: true,
+  updatedAt: true,
+} as const;
 
-    const [items, total] = await Promise.all([
+export async function GET(request: Request) {
+  if (!(await requireAdmin(request))) {
+    return NextResponse.json(
+      { success: false, message: "Administrator access required" },
+      { status: 403 }
+    );
+  }
+
+  try {
+    const { searchParams } = new URL(request.url);
+    const take = Math.min(Math.max(Number(searchParams.get("take")) || 50, 1), 100);
+    const skip = Math.max(Number(searchParams.get("skip")) || 0, 0);
+    const [users, total] = await Promise.all([
       prisma.user.findMany({
         skip,
         take,
         orderBy: { createdAt: "desc" },
-        select: {
-          id: true,
-          email: true,
-          phone: true,
-          fullName: true,
-          location: true,
-          createdAt: true,
-          updatedAt: true,
-        },
+        select: publicUserSelect,
       }),
       prisma.user.count(),
     ]);
-
-    return NextResponse.json({
-      success: true,
-      users: items,
-      total,
-      skip,
-      take,
-    });
-  } catch (err) {
-    console.error("/api/users GET error", err);
+    return NextResponse.json(
+      { success: true, users, total, skip, take },
+      { headers: { "Cache-Control": "no-store" } }
+    );
+  } catch (error) {
+    console.error("/api/users GET error", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
       { status: 500 }
@@ -44,42 +54,26 @@ export async function GET(req: Request) {
   }
 }
 
-// PATCH /api/users
-export async function PATCH(req: Request) {
+export async function PATCH(request: Request) {
+  const sessionUser = await requireAuthenticatedUser(request);
+  if (!sessionUser) {
+    return NextResponse.json(
+      { success: false, message: "Authentication required" },
+      { status: 401 }
+    );
+  }
+
   try {
-    const body = await req.json();
-    const id: string | undefined = body?.id;
-    if (!id) {
+    const body = await request.json();
+    const requestedId = typeof body?.id === "string" ? body.id : sessionUser.id;
+    if (requestedId !== sessionUser.id && sessionUser.role !== "ADMIN") {
       return NextResponse.json(
-        { success: false, message: "id is required" },
-        { status: 400 }
+        { success: false, message: "You can only update your own profile" },
+        { status: 403 }
       );
     }
 
-    // Allowed fields
-    const fullName: string | undefined = body?.fullName?.trim();
-    const emailRaw: string | undefined = body?.email?.trim();
-    const phone: string | undefined = body?.phone?.trim();
-    const location: string | undefined = body?.location?.trim();
-    const passwordRaw: string | undefined = body?.password?.trim();
-
-    const email = emailRaw ? emailRaw.toLowerCase() : undefined;
-
-    if (
-      !fullName &&
-      !email &&
-      !phone &&
-      !location &&
-      (!passwordRaw || passwordRaw.length === 0)
-    ) {
-      return NextResponse.json(
-        { success: false, message: "No fields to update" },
-        { status: 400 }
-      );
-    }
-
-    // Ensure user exists
-    const existing = await prisma.user.findUnique({ where: { id } });
+    const existing = await prisma.user.findUnique({ where: { id: requestedId } });
     if (!existing) {
       return NextResponse.json(
         { success: false, message: "User not found" },
@@ -87,12 +81,44 @@ export async function PATCH(req: Request) {
       );
     }
 
-    // Unique constraints on email/phone if they are changing
+    const fullName = typeof body?.fullName === "string" ? body.fullName.trim() : undefined;
+    const email = typeof body?.email === "string" ? body.email.trim().toLowerCase() : undefined;
+    const phone = typeof body?.phone === "string" ? body.phone.trim() : undefined;
+    const location = typeof body?.location === "string" ? body.location.trim() : undefined;
+    const password = typeof body?.password === "string" && body.password ? body.password : undefined;
+    const currentPassword = typeof body?.currentPassword === "string" ? body.currentPassword : undefined;
+    const changesCredentials = Boolean(password || (email && email !== existing.email));
+
+    if (changesCredentials) {
+      if (!currentPassword) {
+        return NextResponse.json(
+          { success: false, message: "Current password is required for email or password changes" },
+          { status: 400 }
+        );
+      }
+      try {
+        await auth.api.verifyPassword({
+          body: { password: currentPassword },
+          headers: request.headers,
+        });
+      } catch {
+        return NextResponse.json(
+          { success: false, message: "Current password is incorrect" },
+          { status: 401 }
+        );
+      }
+    }
+
+    if (password && (password.length < 8 || password.length > 128)) {
+      return NextResponse.json(
+        { success: false, message: "Password must be 8 to 128 characters" },
+        { status: 400 }
+      );
+    }
+
     if (email && email !== existing.email) {
-      const emailTaken = await prisma.user.findFirst({
-        where: { email, NOT: { id } },
-      });
-      if (emailTaken) {
+      const duplicate = await prisma.user.findUnique({ where: { email } });
+      if (duplicate) {
         return NextResponse.json(
           { success: false, message: "Email already in use" },
           { status: 409 }
@@ -100,54 +126,32 @@ export async function PATCH(req: Request) {
       }
     }
 
-    if (phone && phone !== existing.phone) {
-      const phoneTaken = await prisma.user.findFirst({
-        where: { phone, NOT: { id } },
+    const user = await prisma.$transaction(async (tx) => {
+      const updated = await tx.user.update({
+        where: { id: requestedId },
+        data: {
+          ...(fullName ? { fullName, name: fullName } : {}),
+          ...(email ? { email } : {}),
+          ...(phone ? { phone } : {}),
+          ...(location ? { location } : {}),
+        },
+        select: publicUserSelect,
       });
-      if (phoneTaken) {
-        return NextResponse.json(
-          { success: false, message: "Phone already in use" },
-          { status: 409 }
-        );
+      if (password) {
+        await tx.account.updateMany({
+          where: { userId: requestedId, providerId: "credential" },
+          data: { password: await hashPassword(password) },
+        });
       }
-    }
-
-    const data: Record<string, unknown> = {};
-    if (typeof fullName === "string") data.fullName = fullName;
-    if (typeof email === "string") data.email = email;
-    if (typeof phone === "string") data.phone = phone;
-    if (typeof location === "string") data.location = location;
-
-    if (passwordRaw && passwordRaw.length > 0) {
-      if (passwordRaw.length < 6) {
-        return NextResponse.json(
-          { success: false, message: "Password must be at least 6 characters" },
-          { status: 400 }
-        );
-      }
-      const salt = randomBytes(16).toString("hex");
-      const derivedKey = scryptSync(passwordRaw, salt, 64).toString("hex");
-      const passwordHash = `${salt}:${derivedKey}`;
-      data.password = passwordHash;
-    }
-
-    const updated = await prisma.user.update({
-      where: { id },
-      data,
-      select: {
-        id: true,
-        email: true,
-        phone: true,
-        fullName: true,
-        location: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+      return updated;
     });
 
-    return NextResponse.json({ success: true, user: updated });
-  } catch (err) {
-    console.error("/api/users PATCH error", err);
+    return NextResponse.json(
+      { success: true, user },
+      { headers: { "Cache-Control": "no-store" } }
+    );
+  } catch (error) {
+    console.error("/api/users PATCH error", error);
     return NextResponse.json(
       { success: false, message: "Internal server error" },
       { status: 500 }

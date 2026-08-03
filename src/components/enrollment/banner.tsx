@@ -16,6 +16,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { authClient } from "@/lib/auth-client";
 
 export default function Banner() {
   const [showRegistrationModal, setShowRegistrationModal] = useState(false);
@@ -120,7 +121,8 @@ export default function Banner() {
                   Courses
                 </DropdownMenuItem>
                 <Button
-                  onClick={() => {
+                  onClick={async () => {
+                    await authClient.signOut();
                     useUserStore.getState().clearUser();
                   }}
                   variant="destructive"

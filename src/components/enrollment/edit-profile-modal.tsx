@@ -29,6 +29,7 @@ export default function EditProfileModal({
     phone: string;
     location: string;
     password?: string;
+    currentPassword?: string;
   }>({
     defaultValues: {
       fullName: user?.fullName || "",
@@ -36,6 +37,7 @@ export default function EditProfileModal({
       phone: user?.phone || "",
       location: user?.location || "",
       password: "",
+      currentPassword: "",
     },
   });
   const { mutate: updateProfile, isPending } = useUpdateUserProfile();
@@ -49,6 +51,7 @@ export default function EditProfileModal({
         phone: user?.phone || "",
         location: user?.location || "",
         password: "",
+        currentPassword: "",
       });
     }
   }, [open, user, reset]);
@@ -62,12 +65,16 @@ export default function EditProfileModal({
     phone: string;
     location: string;
     password?: string;
+    currentPassword?: string;
   }) => {
     updateProfile(
       {
         id: user.id,
         ...data,
         password: data.password?.trim() ? data.password : undefined,
+        currentPassword: data.currentPassword?.trim()
+          ? data.currentPassword
+          : undefined,
       },
       {
         onSuccess: (updated) => {
@@ -167,11 +174,26 @@ export default function EditProfileModal({
           </div>
           <div>
             <label className="block text-sm font-medium mb-2">
+              Current Password (required to change email or password)
+            </label>
+            <Input
+              {...register("currentPassword")}
+              type="password"
+              autoComplete="current-password"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">
               New Password (optional)
             </label>
             <div className="relative">
               <Input
-                {...register("password")}
+                {...register("password", {
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters",
+                  },
+                })}
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••"
               />
@@ -187,6 +209,11 @@ export default function EditProfileModal({
                 )}
               </button>
             </div>
+            {errors.password && (
+              <p className="text-destructive text-sm mt-1">
+                {errors.password.message}
+              </p>
+            )}
           </div>
 
           <Button

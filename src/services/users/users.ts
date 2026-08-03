@@ -24,6 +24,11 @@ export const useLoginUser = () => {
   });
 };
 
+export const getCurrentUser = async (): Promise<User> => {
+  const response = await api.get(`/api/users/me`);
+  return response.data.user;
+};
+
 export const useRegisterUser = () => {
   return useMutation({
     mutationFn: registerUser,
@@ -32,7 +37,9 @@ export const useRegisterUser = () => {
 
 export const useUpdateUserProfile = () => {
   return useMutation({
-    mutationFn: async (data: { id: string } & Partial<RegisterUserData>) => {
+    mutationFn: async (
+      data: { id: string; currentPassword?: string } & Partial<RegisterUserData>
+    ) => {
       const response = await api.patch(`/api/users`, data);
       return response.data.user;
     },
